@@ -1,9 +1,10 @@
-from heap import FibonacciHeap
+from heap import FibonacciHeap, Node
 from graph import Vertex
 
 
 def prim(G, s):
     vert = []
+    nodes = []
     q = FibonacciHeap()
     # assumo che tutti i valori da 0 a n_vertexes - 1 (numero di vertici del grafo) siano tutti gli esatti indici dei
     # vertici
@@ -12,11 +13,13 @@ def prim(G, s):
         if x == s:
             v.key = 0
         vert.append(v)
-        q.insert(v.key, v)
+        n = Node(v.key, v)
+        nodes.append(n)
+        q.insert(n)
 
-    # per accedere al valore dovremmo utilizzare il campo id, ma per semplificare il tutto si assume che in posizione s ci sia id = s
+    # per accedere al valore dovremmo utilizzare il campo id,
+    # ma per semplificare il tutto si assume che in posizione s ci sia id = s
     vert[s].key = 0
-
     print("debuggami sto cazzo!")
     while q.total_nodes > 0:
         u = q.extract_min().value

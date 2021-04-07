@@ -1,22 +1,26 @@
+import math
+
+
+class Node:
+    def __init__(self, key, value):
+        self.key = key
+        self.value = value
+        # genitore di Node.
+        self.parent = None
+        # figlio specifico (dei vari ed eventuali) verso il quale Node ha un riferimento.
+        self.child = None
+        # fratello sinistro (stesso grado).
+        self.left = None
+        # fratello destro (stesso grado).
+        self.right = None
+        # grado del Node.
+        self.degree = 0
+        # indicatore di marcaggio del Node.
+        self.mark = False
+
 class FibonacciHeap:
     # classe Node utilizzata per contenere i valori del singolo nodo ed i puntatori della double linked list.
     # La struttura è standard e contenente: chiave, valore, genitore, (un) figlio, fratello sinistro, fratello destro, grado e marchio.
-    class Node:
-        def __init__(self, key, value):
-            self.key = key
-            self.value = value
-            # genitore di Node.
-            self.parent = None
-            # figlio specifico (dei vari ed eventuali) verso il quale Node ha un riferimento.
-            self.child = None
-            # fratello sinistro (stesso grado).
-            self.left = None
-            # fratello destro (stesso grado).
-            self.right = None
-            # grado del Node.
-            self.degree = 0
-            # indicatore di marcaggio del Node.
-            self.mark = False
 
     # puntatori alla testa della root list ed al suo nodo minimo.
     root_list, min_node = None, None
@@ -36,8 +40,7 @@ class FibonacciHeap:
             node = node.right
 
     # inserisce un elemento in tempo O(1). Questo viene semplicemente inserito nella lista delle roots.
-    def insert(self, key, value=None):
-        n = self.Node(key, value)
+    def insert(self, n):
         n.left = n.right = n
         self.merge_with_root_list(n)
         if self.min_node is None or n.key < self.min_node.key:
