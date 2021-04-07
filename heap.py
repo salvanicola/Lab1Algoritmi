@@ -20,8 +20,9 @@ class Node:
 
 
 class FibonacciHeap:
-    # classe Node utilizzata per contenere i valori del singolo nodo ed i puntatori della double linked list.
-    # La struttura è standard e contenente: chiave, valore, genitore, (un) figlio, fratello sinistro, fratello destro, grado e marchio.
+    # classe Node utilizzata per contenere i valori del singolo nodo ed i puntatori della double linked list. La
+    # struttura è standard e contenente: chiave, valore, genitore, (un) figlio, fratello sinistro, fratello destro,
+    # grado e marchio.
 
     # puntatori alla testa della root list ed al suo nodo minimo.
     root_list, min_node = None, None
@@ -104,7 +105,8 @@ class FibonacciHeap:
                 if A[i].key < self.min_node.key:
                     self.min_node = A[i]
 
-    # dati i nodi "x" e "y", questa funzione rimuove "y" dalla root list e lo aggiunge come figlio di "x", aggiornando gli opportuni attributi.
+    # dati i nodi "x" e "y", questa funzione rimuove "y" dalla root list e lo aggiunge come figlio di "x",
+    # aggiornando gli opportuni attributi.
     def heap_link(self, y, x):
         self.remove_from_root_list(y)
         y.left = y.right = y

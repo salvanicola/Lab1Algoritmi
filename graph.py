@@ -33,7 +33,7 @@ def graph_generator(file):
             lines.pop(0)
             for x in lines:
                 x = x.split(" ")
-                graph.add(int(x[0]), int(x[1]), int(x[2]))
+                graph.add(int(x[0])-1, int(x[1])-1, int(x[2]))
     finally:
         fp.close()
         return graph

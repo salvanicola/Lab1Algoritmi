@@ -8,7 +8,7 @@ def prim(G, s):
     q = FibonacciHeap()
     # assumo che tutti i valori da 0 a n_vertexes - 1 (numero di vertici del grafo) siano tutti gli esatti indici dei
     # vertici
-    for x in range(0, G.n_vertexes - 1):
+    for x in range(0, G.n_vertexes):
         v = Vertex(x)
         if x == s:
             v.key = 0
@@ -32,7 +32,9 @@ def prim(G, s):
             if v_vert is not None and v_arch.flag == False and v_arch.weight < vert[v_vert].key:
                 vert[v_vert].parent = u
                 vert[v_vert].key = v_arch.weight
+                print("culo", q.total_nodes)
                 q.decrease_key(nodes[v_vert], v_arch.weight)
-                # UPDATE THE FIBONACCI HEAP KEY IN O(LOGN)
+                v_arch.flag = True
+                print("culo", q.total_nodes)
 
     print("debuggami sto cazzo!")
