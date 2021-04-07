@@ -20,16 +20,19 @@ def prim(G, s):
     # per accedere al valore dovremmo utilizzare il campo id,
     # ma per semplificare il tutto si assume che in posizione s ci sia id = s
     vert[s].key = 0
-    print("debuggami sto cazzo!")
     while q.total_nodes > 0:
-        u = q.extract_min().value
+        u_node = q.extract_min()
+        u = u_node.value
         for v_arch in G.list:
             v_vert = None
-            if u == v_arch.vert1:
+            if u.id == v_arch.vert1:
                 v_vert = v_arch.vert2
-            elif u == v_arch.vert2:
+            elif u.id == v_arch.vert2:
                 v_vert = v_arch.vert1
-            if v_vert is not None and v_arch.flag == False and v_arch.weight < v_vert.key:
-                vert[v_vert.id].parent = u
-                vert[v_vert.id].key = v_arch.weight
+            if v_vert is not None and v_arch.flag == False and v_arch.weight < vert[v_vert].key:
+                vert[v_vert].parent = u
+                vert[v_vert].key = v_arch.weight
+                q.decrease_key(nodes[v_vert], v_arch.weight)
                 # UPDATE THE FIBONACCI HEAP KEY IN O(LOGN)
+
+    print("debuggami sto cazzo!")

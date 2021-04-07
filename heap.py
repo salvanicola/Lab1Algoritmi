@@ -18,6 +18,7 @@ class Node:
         # indicatore di marcaggio del Node.
         self.mark = False
 
+
 class FibonacciHeap:
     # classe Node utilizzata per contenere i valori del singolo nodo ed i puntatori della double linked list.
     # La struttura è standard e contenente: chiave, valore, genitore, (un) figlio, fratello sinistro, fratello destro, grado e marchio.
@@ -78,8 +79,9 @@ class FibonacciHeap:
             self.total_nodes -= 1
         return z
 
-    # funzione che combina i Node della root list di ugual grado per consolidare l'heap, tramite la creazione di una lista di alberi binari non ordinati.
-    # la variabile "A" è una lista di puntatori di nodi di lunghezza "log(n)", in cui è inserito in posizione "t" il nodo in root list con "rank = t".
+    # funzione che combina i Node della root list di ugual grado per consolidare l'heap, tramite la creazione di una
+    # lista di alberi binari non ordinati. la variabile "A" è una lista di puntatori di nodi di lunghezza "log(n)",
+    # in cui è inserito in posizione "t" il nodo in root list con "rank = t".
     def consolidate(self):
         A = [None] * int(math.log(self.total_nodes) * 2)
         nodes = [w for w in self.iterate(self.root_list)]
@@ -127,3 +129,43 @@ class FibonacciHeap:
             node.left = parent.child
             parent.child.right.left = node
             parent.child.right = node
+
+    # metodo che modifica la key di un nodo in tempo costante O(logn).
+    def decrease_key(self, x, k):
+        if k > x.key:
+            return None
+        x.key = k
+        y = x.parent
+        if y is not None and x.key < y.key:
+            self.cut(x, y)
+            self.cascading_cut(y)
+        if x.key < self.min_node.key:
+            self.min_node = x
+
+    # metodo che si occupa di spostare un nodo figlio x di y nella root_list.
+    def cut(self, x, y):
+        self.remove_from_child_list(y, x)
+        y.degree -= 1
+        self.merge_with_root_list(x)
+        x.parent = None
+        x.mark = False
+
+    # metodo che effettua un taglio a cascata da y verso l'alto che, se marcato "True", inserisce il nodo in root_list.
+    def cascading_cut(self, y):
+        z = y.parent
+        if z is not None:
+            if y.mark is False:
+                y.mark = True
+            else:
+                self.cut(y, z)
+                self.cascading_cut(z)
+
+    # metodo che rimuove un nodo dalla child_list
+    def remove_from_child_list(self, parent, node):
+        if parent.child == parent.child.right:
+            parent.child = None
+        elif parent.child == node:
+            parent.child = node.right
+            node.right.parent = parent
+        node.left.right = node.right
+        node.right.left = node.left
