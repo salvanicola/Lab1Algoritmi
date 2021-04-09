@@ -12,7 +12,7 @@ from prim import prim
 
 
 def upload_graph():
-    files = glob.glob("mst_dataset/input_random_13_80.txt")
+    files = glob.glob("mst_dataset/*.txt")
     graphs = []
     for x in files:
         graphs.append(graph_generator(x))
