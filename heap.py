@@ -84,7 +84,7 @@ class FibonacciHeap:
     # lista di alberi binari non ordinati. la variabile "A" è una lista di puntatori di nodi di lunghezza "log(n)",
     # in cui è inserito in posizione "t" il nodo in root list con "rank = t".
     def consolidate(self):
-        A = [None] * int(math.log(self.total_nodes) * 2)
+        A = [None] * (int(math.log(self.total_nodes) * 2) + 1)
         nodes = [w for w in self.iterate(self.root_list)]
         for w in range(0, len(nodes)):
             x = nodes[w]

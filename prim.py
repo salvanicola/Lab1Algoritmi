@@ -23,6 +23,7 @@ def prim(G, s):
     while q.total_nodes > 0:
         u_node = q.extract_min()
         u = u_node.value
+        print("culo", q.total_nodes)
         for v_arch in G.list:
             v_vert = None
             if u.id == v_arch.vert1:
@@ -32,9 +33,7 @@ def prim(G, s):
             if v_vert is not None and v_arch.flag == False and v_arch.weight < vert[v_vert].key:
                 vert[v_vert].parent = u
                 vert[v_vert].key = v_arch.weight
-                print("culo", q.total_nodes)
                 q.decrease_key(nodes[v_vert], v_arch.weight)
                 v_arch.flag = True
-                print("culo", q.total_nodes)
 
     print("debuggami sto cazzo!")
