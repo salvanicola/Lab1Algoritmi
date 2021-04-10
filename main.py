@@ -9,7 +9,7 @@ import logging
 
 from graph import graph_generator, Graph
 import glob
-import threading
+
 
 from prim import prim
 
@@ -36,7 +36,7 @@ if __name__ == '__main__':
         root = x.list[0].vert1
         # thread = threading.Thread(target=prim, args=(x, root))
         # threads.append(thread)
-        logger.debug("create and start thread number %s", index)
+        # logger.debug("create and start thread number %s", index)
         # thread.start()
         prim(x, root)
         index = index + 1
