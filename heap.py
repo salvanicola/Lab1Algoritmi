@@ -1,7 +1,9 @@
 class Node:
-    def __init__(self, value):
+    def __init__(self, value, id):
         # We currently only support number elements.
         self.value = value
+        # siccome supporta solo value di tipo numero inserisco l'informazione id per tracciare il vertice
+        self.id = id
         # Pointer to the parent node.
         self.parent = None
         # Pointer to the first child in the list of children.
@@ -84,7 +86,7 @@ class FibonacciHeap:
             self.root_list = None
         else:
             self.min_node = self.find_min_node()
-        return m.value
+        return m.id
 
     # This operation works by taking the node, decreasing the key and if the heap property becomes violated (the new key 
     # is smaller than the key of the parent), the node is cut from its parent. If the parent is not a root, it is marked. 

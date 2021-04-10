@@ -5,8 +5,11 @@
 
 
 # Press the green button in the gutter to run the script.
+import logging
+
 from graph import graph_generator, Graph
 import glob
+import threading
 
 from prim import prim
 
@@ -20,8 +23,24 @@ def upload_graph():
 
 
 if __name__ == '__main__':
+
+    logger = logging.getLogger('tipper')
+    logger.setLevel(logging.DEBUG)
+    logger.addHandler(logging.StreamHandler())
+
     graphs = upload_graph()
+    # threads = list()
+    index = 0
+
     for x in graphs:
         root = x.list[0].vert1
+        # thread = threading.Thread(target=prim, args=(x, root))
+        # threads.append(thread)
+        logger.debug("create and start thread number %s", index)
+        # thread.start()
         prim(x, root)
-    print(" the end ")
+        index = index + 1
+
+    # for index, thread in enumerate(threads):
+    #     thread.join()
+    logger.debug(" the end ")

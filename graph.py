@@ -3,8 +3,6 @@ class Arc:
         self.vert1 = v1
         self.vert2 = v2
         self.weight = w
-        # flag dice se è stato già selezionato per lo spanning tree
-        self.flag = False
 
     def weight(self):
         return self.weight
@@ -44,3 +42,5 @@ class Vertex:
         self.key = k
         self.parent = None
         self.id = i
+        # flag dice se è già stato estratto dallo spanning tree
+        self.flag = False
