@@ -7,7 +7,6 @@ from graph import Vertex
 import time
 from progress.bar import Bar
 
-
 def prim(G, s):
     with progressbar.ProgressBar(G.n_vertexes) as bar:
         logger = logging.getLogger('tipper')
