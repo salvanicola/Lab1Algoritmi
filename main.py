@@ -33,7 +33,7 @@ if __name__ == '__main__':
     index = 0
 
     for x in graphs:
-        root = x.list[0].vert1
+        root = x.arch_list[0].vert1
         # thread = threading.Thread(target=prim, args=(x, root))
         # threads.append(thread)
         # logger.debug("create and start thread number %s", index)

@@ -62,9 +62,10 @@ class FibonacciHeap:
         self.total_num_elements += 1
         return node
 
-    # Extracting minumum element is done in a few steps. First we take the root containing the minimum element and remove 
-    # it. Its children will become roots of new trees. If the number of children was d, it takes time O(d) to process all 
-    # new roots and the potential increases by d−1. Therefore, the amortized running time of this phase is O(d) = O(log n).
+    # Extracting minumum element is done in a few steps. First we take the root containing the minimum element and
+    # remove it. Its children will become roots of new trees. If the number of children was d, it takes time O(d) to
+    # process all new roots and the potential increases by d−1. Therefore, the amortized running time of this phase
+    # is O(d) = O(log n).
     def extract_minimum(self):
         m = self.min_node
         if m is None:
@@ -88,15 +89,15 @@ class FibonacciHeap:
             self.min_node = self.find_min_node()
         return m.id
 
-    # This operation works by taking the node, decreasing the key and if the heap property becomes violated (the new key 
-    # is smaller than the key of the parent), the node is cut from its parent. If the parent is not a root, it is marked. 
-    # If it has been marked already, it is cut as well and its parent is marked. We continue upwards until we reach either 
-    # the root or an unmarked node. Now we set the minimum pointer to the decreased value if it is the new minimum. In the 
-    # process we create some number, say k, of new trees. Each of these new trees except possibly the first one was marked 
-    # originally but as a root it will become unmarked. One node can become marked. Therefore, the number of marked nodes 
-    # changes by −(k − 1) + 1 = − k + 2. Combining these 2 changes, the potential changes by 2(−k + 2) + k = −k + 4. The 
-    # actual time to perform the cutting was O(k), therefore (again with a sufficiently large choice of c) the amortized 
-    # running time is constant.
+    # This operation works by taking the node, decreasing the key and if the heap property becomes violated (the new
+    # key is smaller than the key of the parent), the node is cut from its parent. If the parent is not a root,
+    # it is marked. If it has been marked already, it is cut as well and its parent is marked. We continue upwards
+    # until we reach either the root or an unmarked node. Now we set the minimum pointer to the decreased value if it
+    # is the new minimum. In the process we create some number, say k, of new trees. Each of these new trees except
+    # possibly the first one was marked originally but as a root it will become unmarked. One node can become marked.
+    # Therefore, the number of marked nodes changes by −(k − 1) + 1 = − k + 2. Combining these 2 changes,
+    # the potential changes by 2(−k + 2) + k = −k + 4. The actual time to perform the cutting was O(k), therefore (
+    # again with a sufficiently large choice of c) the amortized running time is constant.
     def decrease_key(self, node, v):
         if v >= node.value:
             raise ValueError("Cannot decrease key with a value greater than what it already is.")
@@ -109,9 +110,9 @@ class FibonacciHeap:
             self.min_node = node
         return
 
-    # Delete operation can be implemented simply by decreasing the key of the element to be deleted to minus infinity, thus 
-    # turning it into the minimum of the whole heap. Then we call extract minimum to remove it. The amortized running time 
-    # of this operation is O(log n).
+    # Delete operation can be implemented simply by decreasing the key of the element to be deleted to minus
+    # infinity, thus turning it into the minimum of the whole heap. Then we call extract minimum to remove it. The
+    # amortized running time of this operation is O(log n).
     def delete(self, node):
         self.decrease_key(node, -1)
         self.extract_minimum()

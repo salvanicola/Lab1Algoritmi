@@ -10,15 +10,16 @@ class Arc:
 
 class Graph:
     def __init__(self, v, a):
-        self.list = []
+        self.arch_list = []
+        self.vert_list = []
         self.n_vertexes = v
         self.n_arches = a
 
     def add(self, v1, v2, w):
-        self.list.append(Arc(v1, v2, w))
+        self.arch_list.append(Arc(v1, v2, w))
 
     def remove(self, arch):
-        self.list.remove(arch)
+        self.arch_list.remove(arch)
 
 
 def graph_generator(file):
@@ -29,6 +30,8 @@ def graph_generator(file):
             parsing = lines[0].split(" ")
             graph = Graph(int(parsing[0]), int(parsing[1]))
             lines.pop(0)
+            for x in range(0, graph.n_vertexes):
+                graph.vert_list.append(Vertex(x))
             for x in lines:
                 x = x.split(" ")
                 graph.add(int(x[0])-1, int(x[1])-1, int(x[2]))

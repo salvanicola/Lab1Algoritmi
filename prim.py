@@ -33,7 +33,7 @@ def prim(G, s):
             u_id = q.extract_minimum()
             vert[u_id].flag = True
             v_vert = None
-            for v_arch in G.list:
+            for v_arch in G.arch_list:
                 if v_arch.vert1 == u_id:
                     v_vert = v_arch.vert2
                 elif v_arch.vert2 == u_id:
