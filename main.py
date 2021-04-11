@@ -9,11 +9,9 @@ import logging
 
 from graph import graph_generator, Graph
 import matplotlib.pyplot as plt
-import numpy as np
 import time
 import glob
 import math
-import threading
 
 from prim import prim
 
