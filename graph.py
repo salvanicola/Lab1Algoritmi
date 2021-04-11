@@ -12,9 +12,9 @@ class Arc:
 
 class Graph:
     # Funzione di inizializzazione del grafo.
-    def __init__(self):
+    def __init__(self, n_v):
         self.arch_list = []
-        self.vert_list = [None] * 100000
+        self.vert_list = [None] * n_v
         self.n_vertexes = 0
         self.n_arches = 0
 
@@ -44,9 +44,9 @@ def graph_generator(file):
         lines = fp.readlines()
         if lines.__len__() > 0:
             parsing = lines[0].split(" ")
-            graph = Graph()
             n_v = int(parsing[0])
             n_a = int(parsing[1])
+            graph = Graph(n_v)
             lines.pop(0)
             for x in lines:
                 x = x.split(" ")
