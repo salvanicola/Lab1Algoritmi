@@ -9,6 +9,13 @@ class Arc:
     def weight(self):
         return self.weight
 
+    def opposite(self, s):
+        if self.vert1 == s:
+            return self.vert2
+        if self.vert2 == s:
+            return self.vert1
+        return None
+
 
 class Graph:
     # Funzione di inizializzazione del grafo.
@@ -17,22 +24,26 @@ class Graph:
         self.vert_list = [None] * n_v
         self.n_vertexes = 0
         self.n_arches = 0
+        self.adj = [None] * n_v
 
     # Funzione di aggiunta di un arco al grafo.
     def add(self, v1, v2, w):
-        self.arch_list.append(Arc(v1, v2, w))
-        self.n_arches += 1
+        # aggiungo i vertici e inizializzo le liste di adiacenza
         if self.vert_list[v1] is None:
+            self.adj[v1] = list()
             self.vert_list[v1] = Vertex(v1)
             self.n_vertexes += 1
         if self.vert_list[v2] is None:
+            self.adj[v2] = list()
             self.vert_list[v2] = Vertex(v2)
             self.n_vertexes += 1
+        # aggiungo l'arco in input
+        self.arch_list.append(Arc(v1, v2, w))
+        self.n_arches += 1
+        # aggiorno la lista di adiacenza
+        self.adj[v1].append(v2)
+        self.adj[v2].append(v1)
 
-    # Funzione di rimozione di un arco dal grafo.
-    def remove(self, arch):
-        self.arch_list.remove(arch)
-        self.n_arches -= 1
 
 
 # Funzione di generazione di un grafo a partire da un file fornito in input.
