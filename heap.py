@@ -1,33 +1,33 @@
 class Node:
     def __init__(self, value, id):
-        # We currently only support number elements.
+        # Valore della key del nodo.
         self.value = value
-        # siccome supporta solo value di tipo numero inserisco l'informazione id per tracciare il vertice
+        # ID del vertice associato al nodo.
         self.id = id
-        # Pointer to the parent node.
+        # Puntatore al nodo parent.
         self.parent = None
-        # Pointer to the first child in the list of children.
+        # Puntatore al primo figlio nella lista dei figli.
         self.child = None
-        # Pointer to the left node.
+        # Puntatore al nodo sinistro.
         self.left = None
-        # Pointer to the right node.
+        # Puntatore al nodo destro.
         self.right = None
-        # Node degree - number of children.
+        # Grado del nodo - numero di figli.
         self.deg = 0
-        # Is the node marked? This is needed for some of the operations.
+        # Marcatura del nodo, utilizzata da alcune operazioni specifiche.
         self.mark = False
 
 class FibonacciHeap:
-    # Internal Node class.
-
-    # Pointer to one element of the doubly-linked circular list of heap components.
+    # Puntatore ad un elemento della lista doppiamente linkata e circolare di componenti dell'heap.
+    # Agisce come testa e riferimento all'intera struttura heap.
     root_list = None
-    # Pointer to the node containing minimum element in the heap.
+    # Puntatore al nodo contenente il minimo elemento nell'heap.
     min_node = None
-    # Number of nodes in the entire heap.
+    # Numero totale di nodi all'interno dell'intero heap.
     total_num_elements = 0
 
-    # Iterate through the node list
+    # Funzione per l'iterazione attraverso la lista di nodi fornita (può essere una root list come una child list).
+    # Ci si muoverà attraverso i figli destri nella lista fino a raggiungere nuovamente il nodo di partenza.
     def iterate(self, head=None):
         if head is None:
             head = self.root_list
@@ -40,14 +40,9 @@ class FibonacciHeap:
             if current == head:
                 break
 
-    # Retrieving minimum node is trivial because we maintain a pointer to it.
-    def find_minimum(self):
-        if self.min_node is None:
-            raise ValueError('Fibonacci heap is empty, minimum does not exist!')
-        return self.min_node.value
-
-    # Insert works by creating a new heap with one element and doing merge. This takes constant time, and the potential 
-    # increases by one, because the number of trees increases. The amortized cost is thus still constant. 
+    # Funzione per l'inserimento di un nuovo nodo all'interno dell'heap. Il nodo deve essere costruito all'esterno
+    # della struttura heap. Questa funzione crea un nuovo heap di un elemento ed effettua il merge di quest'ultimo con
+    # l'heap di partenza, il tutto in tempo costante O(1).
     def insert(self, node):
         # Create a new singleton tree
         node.left = node.right = node
@@ -62,26 +57,26 @@ class FibonacciHeap:
         self.total_num_elements += 1
         return node
 
-    # Extracting minumum element is done in a few steps. First we take the root containing the minimum element and
-    # remove it. Its children will become roots of new trees. If the number of children was d, it takes time O(d) to
-    # process all new roots and the potential increases by d−1. Therefore, the amortized running time of this phase
-    # is O(d) = O(log n).
+    # Funzione per l'estrazione del minimo elemento dall'heap, gestita in vari passi. Primo, viene preso il nodo contenente
+    # il minimo elemento e lo rimuove. I suoi figli diventano radici di nuovi alberi. Se il numero di figli era d, è necessario
+    # tempo O(d) per processare tutte le nuove root ed il potenziale aumento di d-1. Quindi, il tempo di esecuzione ammortizzato
+    # di questa fase è O(d) = O(log n).
     def extract_minimum(self):
         m = self.min_node
         if m is None:
-            raise ValueError('Fibonacci heap is empty, cannot extract mininum!')
+            raise ValueError('Il Fibonacci heap è vuoto, non è possibile estrarre il minimo.')
         if m.child is not None:
-            # Meld children into root_list
+            # Inserisce i figli nella root list.
             children = [x for x in self.iterate(m.child)]
             for i in range(0, len(children)):
                 self.meld_into_root_list(children[i])
                 children[i].parent = None
-        # Delete min node
+        # Elimina il nodo minimo.
         self.remove_from_root_list(m)
         self.total_num_elements -= 1
-        # Consolidate trees so that no root has same rank
+        # Consolida (tramite la funzione consolidate) gli alberi, in modo tale che nessuna root abbia lo stesso rank.
         self.consolidate()
-        # Update min
+        # Aggiorna il nodo minimo.
         if m == m.right:
             self.min_node = None
             self.root_list = None
@@ -89,15 +84,8 @@ class FibonacciHeap:
             self.min_node = self.find_min_node()
         return m.id
 
-    # This operation works by taking the node, decreasing the key and if the heap property becomes violated (the new
-    # key is smaller than the key of the parent), the node is cut from its parent. If the parent is not a root,
-    # it is marked. If it has been marked already, it is cut as well and its parent is marked. We continue upwards
-    # until we reach either the root or an unmarked node. Now we set the minimum pointer to the decreased value if it
-    # is the new minimum. In the process we create some number, say k, of new trees. Each of these new trees except
-    # possibly the first one was marked originally but as a root it will become unmarked. One node can become marked.
-    # Therefore, the number of marked nodes changes by −(k − 1) + 1 = − k + 2. Combining these 2 changes,
-    # the potential changes by 2(−k + 2) + k = −k + 4. The actual time to perform the cutting was O(k), therefore (
-    # again with a sufficiently large choice of c) the amortized running time is constant.
+    # Funzione per la riduzione del valore della chiave di un nodo, e se la proprietà dell'heap viene violata (la nuova chiave
+    # è minore di quella del suo parent), viene effettuato il cut (eventualmente ricorsivo) del nodo dai suoi parent.
     def decrease_key(self, node, v):
         if v >= node.value:
             raise ValueError("Cannot decrease key with a value greater than what it already is.")
@@ -110,29 +98,7 @@ class FibonacciHeap:
             self.min_node = node
         return
 
-    # Delete operation can be implemented simply by decreasing the key of the element to be deleted to minus
-    # infinity, thus turning it into the minimum of the whole heap. Then we call extract minimum to remove it. The
-    # amortized running time of this operation is O(log n).
-    def delete(self, node):
-        self.decrease_key(node, -1)
-        self.extract_minimum()
-
-    # Merging two heaps is implemented simply by concatenating the lists of tree roots of the two heaps. 
-    # This can be done in constant time and the potential does not change, leading again to constant amortized time.
-    def merge(self, fh):
-        if fh.total_num_elements == 0:
-            return
-        if fh.min_node.value < self.min_node.value:
-            self.min_node = fh.min_node
-        self.total_num_elements += fh.total_num_elements
-        last = fh.root_list.left
-        fh.root_list.left = self.root_list.left
-        self.root_list.left.right = fh.root_list
-        self.root_list.left = last
-        self.root_list.left.right = self.root_list
-
-    ##### Helper functions #####
-
+    # Funzione per il cut di un nodo dai suoi parent, rimuovendolo quindi dalla lista di figli ed inserendolo in root list.
     def cut(self, node, parent):
         self.remove_from_child_list(parent, node)
         parent.deg -= 1
@@ -140,6 +106,7 @@ class FibonacciHeap:
         node.parent = None
         node.mark = False
 
+    # Funzione per l'esecuzione del controllo del mark ed eventuale cut del parent del nodo fornito.
     def cascading_cut(self, node):
         p = node.parent
         if p is not None:
@@ -149,7 +116,8 @@ class FibonacciHeap:
                 self.cut(node, p)
                 self.cascading_cut(p)
 
-    # Merge a node with the doubly linked root list by adding it to second position in the list
+
+    # Funzione per l'unione di un nodo con la root list tramite la sua aggiunta nella seconda posizione della lista.
     def meld_into_root_list(self, node):
         if self.root_list is None:
             self.root_list = node
@@ -159,10 +127,10 @@ class FibonacciHeap:
             self.root_list.right.left = node
             self.root_list.right = node
 
-    # Deletes a node from the doubly linked root list.
+    # Funzione per l'eliminazione di un nodo dalla root list.
     def remove_from_root_list(self, node):
         if self.root_list is None:
-            raise ValueError('Fibonacci heap is empty, there is no node to remove!')
+            raise ValueError('Heap vuoto')
         if self.root_list == node:
             # Check if there's only one element in the list
             if self.root_list == self.root_list.right:
@@ -174,7 +142,7 @@ class FibonacciHeap:
         node.right.left = node.left
         return
 
-    # Removes a node from the doubly linked child list
+    # Funzione per la rimozione di un nodo dalla lista di figli
     def remove_from_child_list(self, parent, node):
         if parent.child == parent.child.right:
             parent.child = None
@@ -184,7 +152,7 @@ class FibonacciHeap:
         node.left.right = node.right
         node.right.left = node.left
 
-    # Consolidates trees so that no root has same rank.
+    # Funzione per il controllo e la revisione del tree, per fare in modo che nessuna root abbia lo stesso grado.
     def consolidate(self):
         if self.root_list is None:
             return
@@ -202,7 +170,7 @@ class FibonacciHeap:
             ranks_mapping[degree] = node
         return
 
-    # Links two nodes together, putting the node with greater key as child of the other node
+    # Funzione per l'unione di due nodi, inserendo il nodo con chiave maggiore come figlio di un altro nodo.
     def merge_nodes(self, node, other):
         self.remove_from_root_list(other)
         other.left = other.right = other
@@ -213,7 +181,7 @@ class FibonacciHeap:
         other.mark = False
         return
 
-    # Merges a node with the doubly linked child list of the root node.
+    # Funzione che unisce un nodo con la lista dei figli di un nodo root.
     def merge_with_child_list(self, parent, node):
         if parent.child is None:
             parent.child = node
@@ -223,7 +191,7 @@ class FibonacciHeap:
             parent.child.right.left = node
             parent.child.right = node
 
-    # Iterates through whole list and finds minimum node.
+    # Funzione che itera attraverso l'intera lista (child o root) e trova il nodo minimo.
     def find_min_node(self):
         if self.root_list is None:
             return None
@@ -233,44 +201,3 @@ class FibonacciHeap:
                 if x.value < min.value:
                     min = x
             return min
-
-    # Prints the whole fheap.
-    def print(self, head=None):
-        if self.root_list is not None:
-            for heap in self.iterate():
-                print('---')
-                self.print_tree(heap)
-                print()
-            print('---')
-
-    # Prints the node list
-    def print_tree(self, node):
-        if node is None:
-            return
-        print(node.value, end=' ')
-        if node.child is not None:
-            print()
-            for child in self.iterate(node.child):
-                self.print_tree(child)
-
-    # Find node in whole heap that is greater than value.
-    def find_node_greater_than(self, value):
-        if self.root_list is not None:
-            for heap in self.iterate():
-                result = self.find_child_greater_than(heap, value)
-                if result != None:
-                    return result
-        raise ValueError(f'There is no element in the heap that is greater than {value}.')
-
-    # Find node in the child list that is greater than value.
-    def find_child_greater_than(self, node, value):
-        if node is None:
-            return None
-        elif node.value > value:
-            return node
-        if node.child is not None:
-            for child in self.iterate(node.child):
-                result = self.find_child_greater_than(child, value)
-                if result is not None:
-                    return result
-        return None
