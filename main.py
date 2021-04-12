@@ -29,7 +29,7 @@ def numerical_sort(value):
     return parts
 ####################
 
-# ho dovuto ordinare i file per nome
+# ho dovuto ordinare i file per nome (ty stefano lavori)
 def upload_graph():
     files = glob.glob("mst_dataset/*.txt")
     graphs = []
