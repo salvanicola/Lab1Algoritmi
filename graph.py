@@ -4,6 +4,7 @@ class Arc:
         self.vert1 = v1
         self.vert2 = v2
         self.weight = w
+        self.label = None
 
     # Funzione di accesso al peso dell'arco.
     def weight(self):
@@ -44,7 +45,11 @@ class Graph:
         self.adj[v1].append(v2)
         self.adj[v2].append(v1)
 
-
+    def deepcopy(self, graph, n_vertexes):
+        self.__init__(n_vertexes)
+        if graph.n_arches > 0:
+            for x in graph.arch_list:
+                self.add(x.vert1, x.vert2, x.weight)
 
 # Funzione di generazione di un grafo a partire da un file fornito in input.
 def graph_generator(file):

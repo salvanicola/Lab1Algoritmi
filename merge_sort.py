@@ -17,7 +17,7 @@ def mergeSort(myList):
         k = 0
 
         while i < len(left) and j < len(right):
-            if left[i] < right[j]:
+            if left[i].weight < right[j].weight:
                 # The value from the left half has been used
                 myList[k] = left[i]
                 # Move the iterator forward
