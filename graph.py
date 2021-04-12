@@ -4,6 +4,7 @@ class Arc:
         self.vert1 = v1
         self.vert2 = v2
         self.weight = w
+        self.label = None
 
     # Funzione di accesso al peso dell'arco.
     def weight(self):
@@ -44,6 +45,10 @@ class Graph:
         self.adj[v1].append(v2)
         self.adj[v2].append(v1)
 
+    def incident_edges(self, s):
+        for x in self.arch_list:
+            if x.vert1 == s.id or x.vert2 == s.id:
+                yield x
 
 
 # Funzione di generazione di un grafo a partire da un file fornito in input.

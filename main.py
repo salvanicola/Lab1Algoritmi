@@ -7,6 +7,7 @@
 # Press the green button in the gutter to run the script.
 import logging
 
+from dfs import dfs
 from graph import graph_generator, Graph
 import matplotlib.pyplot as plt
 import time
@@ -17,7 +18,7 @@ from prim import prim
 
 
 def upload_graph():
-    files = glob.glob("mst_dataset/*.txt")
+    files = glob.glob("mst_dataset/input_random_02_10.txt")
     graphs = []
     for x in files:
         graphs.append(graph_generator(x))
@@ -31,34 +32,40 @@ if __name__ == '__main__':
     logger.addHandler(logging.StreamHandler())
 
     graphs = upload_graph()
+
+
     # threads = list()
     index = 0
 
     times = []
     complex = []
     for x in graphs:
+        if not dfs(x):
+            logger.debug("siuuuummmmm")
+        else:
+            logger.debug("sad siummm")
         root = x.arch_list[0].vert1
         # thread = threading.Thread(target=prim, args=(x, root))
         # threads.append(thread)
         # logger.debug("create and start thread number %s", index)
         # thread.start()
-        start_time = time.time()
-        prim(x, root)
-        stop_time = time.time() - start_time
-        logger.debug("--- %s seconds ---" % stop_time)
-        index = index + 1
-        times.append(stop_time)
-        complex.append(x.n_vertexes + x.n_arches * math.log(x.n_arches))
+        # start_time = time.time()
+        # prim(x, root)
+        # stop_time = time.time() - start_time
+        # logger.debug("--- %s seconds ---" % stop_time)
+        # index = index + 1
+        # times.append(stop_time)
+        # complex.append(x.n_vertexes + x.n_arches * math.log(x.n_arches))
 
     # for index, thread in enumerate(threads):
     #     thread.join()
-    logger.debug(" the end ")
-    plt.plot(complex, times)
-    temp = 0
-    for x in range(0, len(times)):
-        temp = temp + times[x] / complex[x]
-    temp = temp / len(times)
-    plt.plot(complex, [x*temp for x in complex])
-    plt.ylabel('Operation time')
-    plt.xlabel('m + n * log(n)')
-    plt.show()
+    # logger.debug(" the end ")
+    # plt.plot(complex, times)
+    # temp = 0
+    # for x in range(0, len(times)):
+    #     temp = temp + times[x] / complex[x]
+    # temp = temp / len(times)
+    # plt.plot(complex, [x*temp for x in complex])
+    # plt.ylabel('Operation time')
+    # plt.xlabel('m + n * log(n)')
+    # plt.show()
