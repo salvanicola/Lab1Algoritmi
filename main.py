@@ -49,7 +49,7 @@ if __name__ == '__main__':
         # logger.debug("create and start thread number %s", index)
         # thread.start()
         # start_time = time.time()
-        kruskalNaive(x)
+        # kruskalNaive(x)
         # stop_time = time.time() - start_time
         # logger.debug("--- %s seconds ---" % stop_time)
         # index = index + 1
