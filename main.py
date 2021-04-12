@@ -14,6 +14,7 @@ import time
 import glob
 import math
 
+from kruskal_naive import kruskalNaive
 from prim import prim
 
 
@@ -32,8 +33,6 @@ if __name__ == '__main__':
     logger.addHandler(logging.StreamHandler())
 
     graphs = upload_graph()
-
-
     # threads = list()
     index = 0
 
@@ -50,7 +49,7 @@ if __name__ == '__main__':
         # logger.debug("create and start thread number %s", index)
         # thread.start()
         # start_time = time.time()
-        # prim(x, root)
+        kruskalNaive(x)
         # stop_time = time.time() - start_time
         # logger.debug("--- %s seconds ---" % stop_time)
         # index = index + 1
