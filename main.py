@@ -17,12 +17,24 @@ import math
 from kruskal_naive import kruskalNaive
 from prim import prim
 
+###################
+# mac fix
+import re
+numbers = re.compile(r'(\d+)')
 
+
+def numerical_sort(value):
+    parts = numbers.split(value)
+    parts[1::2] = map(int, parts[1::2])
+    return parts
+####################
+
+# ho dovuto ordinare i file per nome (ty stefano lavori)
 def upload_graph():
-    files = glob.glob("mst_dataset/input_random_02_10.txt")
+    files = glob.glob("mst_dataset/*.txt")
     graphs = []
-    for x in files:
-        graphs.append(graph_generator(x))
+    for infile in sorted(glob.glob("mst_dataset/*.txt"), key=numerical_sort):
+        graphs.append(graph_generator(infile))
     return graphs
 
 
@@ -40,9 +52,9 @@ if __name__ == '__main__':
     complex = []
     for x in graphs:
         if not dfs(x):
-            logger.debug("siuuuummmmm")
+            logger.debug("siuuuummmmm %s", x.n_vertexes)
         else:
-            logger.debug("sad siummm")
+            logger.debug("sad siummm %s", x.n_vertexes)
         root = x.arch_list[0].vert1
         # thread = threading.Thread(target=prim, args=(x, root))
         # threads.append(thread)
