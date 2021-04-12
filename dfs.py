@@ -43,6 +43,7 @@ def dfs_iter(graph, s):
                 v = graph.vert_list[x.opposite(s.id)]
                 if v.flag is False:
                     x.label = "DISCOVERY"
+                    v.flag = True
                     stack.append(v)
                 else:
                     x.label = "BACK"
