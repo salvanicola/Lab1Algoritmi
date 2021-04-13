@@ -45,6 +45,15 @@ class Graph:
         self.adj[v1].append(v2)
         self.adj[v2].append(v1)
 
+    # Non aggiorna il numero dei vertici
+    def pop(self):
+        last = self.arch_list.pop(self.n_arches - 1)
+        self.n_arches -= 1
+        if self.vert_list[last.vert1] is not None:
+            self.adj[last.vert1].remove(last.vert2)
+        if self.vert_list[last.vert2] is not None:
+            self.adj[last.vert2].remove(last.vert1)
+
     def incident_edges(self, s):
         for x in self.arch_list:
             if x.vert1 == s.id or x.vert2 == s.id:
