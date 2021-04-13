@@ -7,19 +7,16 @@ from merge_sort import mergeSort
 
 def kruskalNaive(G):
     logger = logging.getLogger('tipper')
-    logger.debug("ESEGUO Kruskal su grafo con %s vertici e %s archi", G.n_vertexes, G.n_arches)
     A = Graph(G.n_vertexes)
     mergeSort(G.arch_list)
     for e in G.arch_list:
-        B = Graph(G.n_vertexes)
-        B.deepcopy(A, G.n_vertexes)
-        B.add(e.vert1, e.vert2, e.weight)
-        if B.n_arches == G.n_vertexes - 1:
-            A.deepcopy(B, G.n_vertexes)
+        A.add(e.vert1, e.vert2, e.weight)
+        if A.n_arches == G.n_vertexes - 1:
             break
         else:
-            if not dfs(B):
-                A.deepcopy(B, G.n_vertexes)
+            if dfs(A):
+                A.pop()
+    logger.debug("Kruskal su grafo con %s vertici e %s archi ha terminato", G.n_vertexes, G.n_arches)
     return A
 
 
