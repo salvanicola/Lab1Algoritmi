@@ -7,10 +7,7 @@
 # Press the green button in the gutter to run the script.
 import gc
 import logging
-
 from numpy import average
-
-from dfs import dfs
 from graph import graph_generator, Graph
 import matplotlib.pyplot as plt
 import time
@@ -44,49 +41,52 @@ def upload_graph():
     return graphs
 
 
-def plotting_plot(times, complexity):
-    plt.plot(complexity, times)
-    temp = 0
-    for x in range(0, len(times)):
-        temp = temp + times[x] / complex[x]
-    temp = temp / len(times)
-    plt.plot(complexity, [x * temp for x in complexity])
+def plotting_plot(t, comp):
+    references = [0.25 * size * size for size in comp]
+    plt.plot(comp, t)
+    plt.plot(comp, references)
     plt.ylabel('Operation time')
-    plt.xlabel('m')
+    plt.xlabel('n')
     plt.show()
+    logger.debug("plotted")
 
 
-def testing(graphs, function, **args):
+def testing(g, function, **args):
     times = []
     complexity = []
     current_instance = 0
     instance_list = []
-    for x in graphs:
+    for x in g:
+        num_calls = 1
+        if x.n_vertexes < 400:
+            num_calls = 100
         if x.n_vertexes != current_instance:
             avg = average(instance_list)
-            logger.debug("--- %s seconds --- for %s", avg, current_instance)
+            logger.debug("--- %s ns --- for %s", avg, current_instance)
             times.append(average(instance_list))
             complexity.append(current_instance)
             instance_list = []
         gc.disable()
-        start_time = time.perf_counter_ns()
-        function(x)
-        stop_time = time.perf_counter_ns()
+        start_time = time.time()
+        for i in range(num_calls):
+            function(x)
+        stop_time = time.time()
         gc.enable()
-        instance_list.append(stop_time - start_time)
+        instance_list.append((stop_time - start_time)/num_calls)
         current_instance = x.n_vertexes
+
     avg = average(instance_list)
-    logger.debug("--- %s seconds --- for %s", avg, current_instance)
+    logger.debug("--- %s ns --- for %s", avg, current_instance)
     times.append(average(instance_list))
     complexity.append(current_instance)
     return times, complexity
 
 
-if __name__ == '__main__':
-    logger = logging.getLogger('tipper')
-    logger.setLevel(logging.DEBUG)
-    logger.addHandler(logging.StreamHandler())
+logger = logging.getLogger('tipper')
+logger.setLevel(logging.DEBUG)
+logger.addHandler(logging.StreamHandler())
 
+if __name__ == '__main__':
     graphs = upload_graph()
     times, complexity = testing(graphs, kruskalNaive)
     plotting_plot(times, complexity)
