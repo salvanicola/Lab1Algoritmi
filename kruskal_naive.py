@@ -8,7 +8,7 @@ from merge_sort import mergeSort
 
 def kruskalNaive(G):
     logger = logging.getLogger('tipper')
-    logger.debug("KRUSKAL NAIVE for %s", G.n_vertexes)
+    # logger.debug("KRUSKAL NAIVE for %s", G.n_vertexes)
     A = Graph(G.n_vertexes)
     mergeSort(G.arch_list)
     for e in G.arch_list:

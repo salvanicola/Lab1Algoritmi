@@ -7,7 +7,7 @@
 # Press the green button in the gutter to run the script.
 import gc
 import logging
-from numpy import average
+from numpy import average, multiply
 from graph import graph_generator, Graph
 import matplotlib.pyplot as plt
 import time
@@ -41,10 +41,16 @@ def upload_graph():
     return graphs
 
 
-def plotting_plot(t, comp):
-    references = [0.25 * size * size for size in comp]
+def plotting_plot(t, comp, arch):
+    # constant = [round((t[i]/(comp[i]**2)), 3) for i in range(len(comp))]
+    # logger.debug("%s", constant)
+    # references = multiply(comp, constant)
+    references = [230 * c * a for c, a in zip(comp, arch)]
+    # references = [s * 240 for s in references]
+    # references = [240 * size * a for size, a in (comp, arch)]
     plt.plot(comp, t)
     plt.plot(comp, references)
+    plt.legend(["Measure time", "ApproxTime"])
     plt.ylabel('Operation time')
     plt.xlabel('n')
     plt.show()
@@ -54,32 +60,37 @@ def plotting_plot(t, comp):
 def testing(g, function, **args):
     times = []
     complexity = []
-    current_instance = 0
+    arch_num = []
+    current_instance = g[0].n_vertexes
     instance_list = []
     for x in g:
         num_calls = 1
         if x.n_vertexes < 400:
             num_calls = 100
         if x.n_vertexes != current_instance:
-            avg = average(instance_list)
-            logger.debug("--- %s ns --- for %s", avg, current_instance)
+            avg_comp = average([c[0] for c in instance_list])
+            avg_arch = average([c[1] for c in instance_list])
+            logger.debug("--- %s ns --- for %s", avg_comp, current_instance)
             times.append(average(instance_list))
+            arch_num.append(avg_arch)
             complexity.append(current_instance)
             instance_list = []
         gc.disable()
-        start_time = time.time()
+        start_time = time.perf_counter_ns()
         for i in range(num_calls):
             function(x)
-        stop_time = time.time()
+        stop_time = time.perf_counter_ns()
         gc.enable()
-        instance_list.append((stop_time - start_time)/num_calls)
+        instance_list.append([(stop_time - start_time) / num_calls, x.n_arches])
         current_instance = x.n_vertexes
 
-    avg = average(instance_list)
-    logger.debug("--- %s ns --- for %s", avg, current_instance)
-    times.append(average(instance_list))
+    avg_comp = average([c[0] for c in instance_list])
+    avg_arch = average([c[1] for c in instance_list])
+    logger.debug("--- %s ns --- for %s", avg_comp, current_instance)
+    times.append(avg_comp)
+    arch_num.append(avg_arch)
     complexity.append(current_instance)
-    return times, complexity
+    return times, complexity, arch_num
 
 
 logger = logging.getLogger('tipper')
@@ -88,5 +99,5 @@ logger.addHandler(logging.StreamHandler())
 
 if __name__ == '__main__':
     graphs = upload_graph()
-    times, complexity = testing(graphs, kruskalNaive)
-    plotting_plot(times, complexity)
+    times, complexity, arch = testing(graphs, kruskalNaive)
+    plotting_plot(times, complexity, arch)
