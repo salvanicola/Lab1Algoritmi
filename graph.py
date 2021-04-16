@@ -59,11 +59,11 @@ class Graph:
             if x.vert1 == s.id or x.vert2 == s.id:
                 yield x
 
-    def deepcopy(self, graph, n_vertexes):
-        self.__init__(n_vertexes)
-        if graph.n_arches > 0:
-            for x in graph.arch_list:
-                self.add(x.vert1, x.vert2, x.weight)
+    # def deepcopy(self, graph, n_vertexes):
+    #     self.__init__(n_vertexes)
+    #     if graph.n_arches > 0:
+    #         for x in graph.arch_list:
+    #             self.add(x.vert1, x.vert2, x.weight)
 
 # Funzione di generazione di un grafo a partire da un file fornito in input.
 def graph_generator(file):
