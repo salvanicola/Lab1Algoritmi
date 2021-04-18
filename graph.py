@@ -10,6 +10,7 @@ class Arc:
     def weight(self):
         return self.weight
 
+    # Funzione per l'ottenimento del vertice opposto a quello dato, all'interno di un arco.
     def opposite(self, s):
         if self.vert1 == s:
             return self.vert2
@@ -29,36 +30,43 @@ class Graph:
 
     # Funzione di aggiunta di un arco al grafo.
     def add(self, v1, v2, w):
-        # aggiungo i vertici e inizializzo le liste di adiacenza
+        # Vengono aggiunti i vertici ed inizializzate le liste di adiacenza.
         if self.vert_list[v1] is None:
-            self.adj[v1] = list()
+            self.adj[v1] = set()
             self.vert_list[v1] = Vertex(v1)
             self.n_vertexes += 1
         if self.vert_list[v2] is None:
-            self.adj[v2] = list()
+            self.adj[v2] = set()
             self.vert_list[v2] = Vertex(v2)
             self.n_vertexes += 1
-        # aggiungo l'arco in input
+        # Viene aggiunto l'arco dato in input.
         self.arch_list.append(Arc(v1, v2, w))
         self.n_arches += 1
-        # aggiorno la lista di adiacenza
-        self.adj[v1].append(v2)
-        self.adj[v2].append(v1)
+        # Vengono aggiornate le liste di adiacenza.
+        self.adj[v1].add(v2)
+        self.adj[v2].add(v1)
 
-    # Non aggiorna il numero dei vertici
+    # Funzione per l'eliminazione dell'ultimo arco nella lista degli archi. Vengono gestiti anche gli effetti collaterali
+    # sulle liste di adiacenza e di vertici.
     def pop(self):
-        last = self.arch_list.pop(self.n_arches - 1)
+        last = self.arch_list.pop()
         self.n_arches -= 1
         if self.vert_list[last.vert1] is not None:
             self.adj[last.vert1].remove(last.vert2)
+            if len(self.adj[last.vert1]) == 0:
+                self.vert_list[last.vert1] = None
         if self.vert_list[last.vert2] is not None:
             self.adj[last.vert2].remove(last.vert1)
+            if len(self.adj[last.vert2]) == 0:
+                self.vert_list[last.vert2] = None
 
-    def incident_edges(self, s):
-        for x in self.arch_list:
-            if x.vert1 == s.id or x.vert2 == s.id:
-                yield x
+    # Valutare se eliminarla
+    # def incident_edges(self, s):
+    #     for x in self.arch_list:
+    #         if x.vert1 == s.id or x.vert2 == s.id:
+    #             yield x
 
+    # Valutare se eliminarla
     # def deepcopy(self, graph, n_vertexes):
     #     self.__init__(n_vertexes)
     #     if graph.n_arches > 0:
