@@ -8,6 +8,8 @@
 import gc
 import logging
 from numpy import average, multiply
+from progress.bar import Bar
+
 from graph import graph_generator, Graph
 import matplotlib.pyplot as plt
 import time
@@ -42,10 +44,10 @@ def upload_graph():
 
 
 def plotting_plot(t, comp, arch):
-    # constant = [round((t[i]/(comp[i]**2)), 3) for i in range(len(comp))]
-    # logger.debug("%s", constant)
+    constant = [round((t[i]/(comp[i]*arch[i])), 3) for i in range(len(comp))]
+    logger.debug("constant %s \n vertexes %s \n arch %s", constant, comp, arch)
     # references = multiply(comp, constant)
-    references = [230 * c * a for c, a in zip(comp, arch)]
+    references = [160 * c * a for c, a in zip(comp, arch)]
     # references = [s * 240 for s in references]
     # references = [240 * size * a for size, a in (comp, arch)]
     plt.plot(comp, t)
@@ -63,7 +65,9 @@ def testing(g, function, **args):
     arch_num = []
     current_instance = g[0].n_vertexes
     instance_list = []
-    for x in g:
+    bar = Bar('Processing', max=len(g), check_tty=False)
+    for x, s in zip(g, range(len(g))):
+        bar.next()
         num_calls = 1
         if x.n_vertexes < 400:
             num_calls = 100
@@ -84,6 +88,7 @@ def testing(g, function, **args):
         instance_list.append([(stop_time - start_time) / num_calls, x.n_arches])
         current_instance = x.n_vertexes
 
+    bar.finish()
     avg_comp = average([c[0] for c in instance_list])
     avg_arch = average([c[1] for c in instance_list])
     logger.debug("--- %s ns --- for %s", avg_comp, current_instance)
