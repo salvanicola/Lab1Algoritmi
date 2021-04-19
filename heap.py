@@ -77,14 +77,14 @@ class FibonacciHeap:
         # Elimina il nodo minimo.
         self.remove_from_root_list(m)
         self.total_num_elements -= 1
+        # Consolida (tramite la funzione consolidate) gli alberi, in modo tale che nessuna root abbia lo stesso rank.
+        self.consolidate()
         # Aggiorna il nodo minimo.
         if m == m.right:
             self.min_node = None
             self.root_list = None
         else:
-            self.min_node = m.right
-            # Consolida (tramite la funzione consolidate) gli alberi, in modo tale che nessuna root abbia lo stesso rank.
-            self.consolidate()
+            self.min_node = self.find_min_node()
         return m.id
 
     # Funzione per la riduzione del valore della chiave di un nodo, e se la proprietà dell'heap viene violata (la nuova chiave
@@ -157,23 +157,21 @@ class FibonacciHeap:
 
     # Funzione per il controllo e la revisione del tree, per fare in modo che nessuna root abbia lo stesso grado.
     def consolidate(self):
-        A = [None] * (int(math.log(self.total_num_elements) * 2) + 1)
-        # nodes = [w for w in self.iterate()]
-        for w in self.iterate(self.root_list):
-            d = w.deg
-            while A[d] is not None:
-                y = A[d]
-                if w.value > y.value:
-                    temp = w
-                    w, y = y, temp
-                self.merge_nodes(y, w)
-                A[d] = None
-                d += 1
-            A[d] = w
-        for i in range(0, len(A)):
-            if A[i] is not None:
-                if A[i].value < self.min_node.value:
-                    self.min_node = A[i]
+        if self.root_list is None:
+            return
+        ranks_mapping = [None] * (int(math.log(self.total_num_elements) * 2 + 1))
+        nodes = [x for x in self.iterate(self.root_list)]
+        for node in nodes:
+            degree = node.deg
+            while ranks_mapping[degree] is not None:
+                other = ranks_mapping[degree]
+                if node.value > other.value:
+                    node, other = other, node
+                self.merge_nodes(node, other)
+                ranks_mapping[degree] = None
+                degree += 1
+            ranks_mapping[degree] = node
+        return
 
     # Funzione per l'unione di due nodi, inserendo il nodo con chiave maggiore come figlio di un altro nodo.
     def merge_nodes(self, node, other):
