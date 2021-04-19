@@ -10,9 +10,9 @@ from progress.bar import Bar
 
 def prim(G, s):
     # Inizializzazione di una semplice progress bar per verificare l'operazione in corso.
-    with progressbar.ProgressBar(G.n_vertexes) as bar:
+    # with progressbar.ProgressBar(G.n_vertexes) as bar:
         logger = logging.getLogger('tipper')
-        logger.debug("ESEGUO prim su grafo con %s vertici e %s archi", G.n_vertexes, G.n_arches)
+        # logger.debug("ESEGUO prim su grafo con %s vertici e %s archi", G.n_vertexes, G.n_arches)
         vert = []
         nodes = []
         q = FibonacciHeap()
@@ -36,23 +36,19 @@ def prim(G, s):
             # u_id è l'indice di un light edge per l'algoritmo.
             u_id = q.extract_minimum()
             vert[u_id].flag = True
-            v_vert = None
             # Vengono esaminati tutti i vertici adiacenti al vertice identificato da u_id.
-            for v_arch in G.arch_list:
-                if v_arch.vert1 == u_id:
-                    v_vert = v_arch.vert2
-                elif v_arch.vert2 == u_id:
-                    v_vert = v_arch.vert1
-                if v_vert is not None and vert[v_vert].flag is False and v_arch.weight < vert[v_vert].key:
+            for v_arch in G.adj[u_id]:
+                v_vert = v_arch[0]
+                if vert[v_vert].flag is False and v_arch[1] < vert[v_vert].key:
                     # Se verificate le condizioni, il vertice viene inserito nel corretto indice della lista vert,
                     # diventando componente del MST da restituire a fine ciclo.
                     vert[v_vert].parent = nodes[u_id]
-                    vert[v_vert].key = v_arch.weight
+                    vert[v_vert].key = v_arch[1]
                     # Viene aggiornata la chiave del vertice all'interno del Fibonacci Heap con il valore dell'arco
                     # preso in esame.
-                    q.decrease_key(nodes[v_vert], v_arch.weight)
+                    q.decrease_key(nodes[v_vert], v_arch[1])
             initial_node_number = initial_node_number + 1
-            bar.update(initial_node_number)
+            # bar.update(initial_node_number)
 
-    logger.debug("FINITO prim su grafo con %s vertici e %s archi.", G.n_vertexes, G.n_arches)
+        logger.debug("FINITO prim su grafo con %s vertici e %s archi.", G.n_vertexes, G.n_arches)
 

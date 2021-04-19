@@ -32,19 +32,19 @@ class Graph:
     def add(self, v1, v2, w):
         # Vengono aggiunti i vertici ed inizializzate le liste di adiacenza.
         if self.vert_list[v1] is None:
-            self.adj[v1] = set()
+            self.adj[v1] = list()
             self.vert_list[v1] = Vertex(v1)
             self.n_vertexes += 1
         if self.vert_list[v2] is None:
-            self.adj[v2] = set()
+            self.adj[v2] = list()
             self.vert_list[v2] = Vertex(v2)
             self.n_vertexes += 1
         # Viene aggiunto l'arco dato in input.
         self.arch_list.append(Arc(v1, v2, w))
         self.n_arches += 1
         # Vengono aggiornate le liste di adiacenza.
-        self.adj[v1].add(v2)
-        self.adj[v2].add(v1)
+        self.adj[v1].append([v2, w])
+        self.adj[v2].append([v1, w])
 
     # Funzione per l'eliminazione dell'ultimo arco nella lista degli archi. Vengono gestiti anche gli effetti collaterali
     # sulle liste di adiacenza e di vertici.
@@ -52,11 +52,11 @@ class Graph:
         last = self.arch_list.pop()
         self.n_arches -= 1
         if self.vert_list[last.vert1] is not None:
-            self.adj[last.vert1].remove(last.vert2)
+            self.adj[last.vert1].remove([last.vert2, last.weight])
             if len(self.adj[last.vert1]) == 0:
                 self.vert_list[last.vert1] = None
         if self.vert_list[last.vert2] is not None:
-            self.adj[last.vert2].remove(last.vert1)
+            self.adj[last.vert2].remove([last.vert1, last.weight])
             if len(self.adj[last.vert2]) == 0:
                 self.vert_list[last.vert2] = None
 

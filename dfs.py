@@ -61,7 +61,7 @@ def dfs_iter(graph, s, visited):
         # Esamina tutti i vertici adiacenti a quello attuale (s), e se uno di essi
         # non è stato ancora visitato, questi viene aggiunto in fondo allo stack.
         for n in graph.adj[s]:
-            if not visited[n]:
+            if not visited[n[0]]:
                 stack.append(n)
     # Se nessun ciclo è stato trovato, viene ritornato False.
     return False
