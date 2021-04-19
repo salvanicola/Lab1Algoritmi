@@ -50,5 +50,5 @@ def prim(G, s):
             initial_node_number = initial_node_number + 1
             # bar.update(initial_node_number)
 
-        logger.debug("FINITO prim su grafo con %s vertici e %s archi.", G.n_vertexes, G.n_arches)
+        # logger.debug("FINITO prim su grafo con %s vertici e %s archi.", G.n_vertexes, G.n_arches)
 

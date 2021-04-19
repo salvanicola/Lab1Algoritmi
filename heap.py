@@ -157,20 +157,19 @@ class FibonacciHeap:
 
     # Funzione per il controllo e la revisione del tree, per fare in modo che nessuna root abbia lo stesso grado.
     def consolidate(self):
-        A = [None] * int((math.log(self.total_num_elements) * 2) + 1)
-        nodes = [w for w in self.iterate(self.root_list)]
-        for w in range(0, len(nodes)):
-            x = nodes[w]
-            d = x.deg
+        A = [None] * (int(math.log(self.total_num_elements) * 2) + 1)
+        # nodes = [w for w in self.iterate()]
+        for w in self.iterate(self.root_list):
+            d = w.deg
             while A[d] is not None:
                 y = A[d]
-                if x.value > y.value:
-                    temp = x
-                    x, y = y, temp
-                self.merge_nodes(y, x)
+                if w.value > y.value:
+                    temp = w
+                    w, y = y, temp
+                self.merge_nodes(y, w)
                 A[d] = None
                 d += 1
-            A[d] = x
+            A[d] = w
         for i in range(0, len(A)):
             if A[i] is not None:
                 if A[i].value < self.min_node.value:
