@@ -36,11 +36,11 @@ def numerical_sort(value):
 
 # ho dovuto ordinare i file per nome (ty stefano lavori)
 def upload_graph():
-    files = glob.glob("mst_dataset/*.txt")
-    graphs = []
+    # files = glob.glob("mst_dataset/*.txt")
+    gs = []
     for infile in sorted(glob.glob("mst_dataset/*.txt"), key=numerical_sort):
-        graphs.append(graph_generator(infile))
-    return graphs
+        gs.append(graph_generator(infile))
+    return gs
 
 
 def mxn(a, b):
@@ -66,15 +66,15 @@ def plotting_plot(t, vert, arches, fun):
     logger.debug("plotted")
 
 
-def testing(g, function, **args):
+def testing(g, f, **args):
     times = []
     complexity = []
     arch_num = []
     current_instance = g[0].n_vertexes
     instance_list = []
     results = []
-    bar = Bar('Processing ' + function.__name__.title(), max=len(g), check_tty=False)
-    for x, s in zip(g, range(len(g))):
+    bar = Bar('Processing ' + f.__name__.title(), max=len(g), check_tty=False)
+    for x in g:
         bar.next()
         num_calls = 1
         if x.n_vertexes < 1000:
@@ -87,7 +87,7 @@ def testing(g, function, **args):
         start_time = time.perf_counter_ns()
         for i in range(num_calls):
             # function(x, x.vert_list[0])
-            out = function(x, x.vert_list[0])
+            out = f(x, x.vert_list[0])
         stop_time = time.perf_counter_ns()
         gc.enable()
         # -----------------stop-------------------
@@ -97,7 +97,7 @@ def testing(g, function, **args):
         current_instance = x.n_vertexes
 
         # costruisco un array per visualizzare i risultati
-        if function.__name__.title() == "Prim":
+        if f.__name__.title() == "Prim":
             gr = Graph(len(out))
             for m in out:
                 if m.parent is not None:
