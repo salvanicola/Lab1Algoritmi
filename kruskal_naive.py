@@ -6,7 +6,7 @@ from graph import Graph
 from merge_sort import mergeSort
 
 
-def kruskalNaive(G):
+def kruskalNaive(G, *args):
     logger = logging.getLogger('tipper')
     # Inizializzo un grafo vuoto, ovvero con un numero di vertici vuoti uguale a G, per evitare l'uscita dai limiti
     # durante l'assegnazione del valore dei vertici. Viene inoltre convertita la lista di archi a deque, per favorire
@@ -26,8 +26,5 @@ def kruskalNaive(G):
             A.pop()
         if A.n_arches == G.n_vertexes - 1:
             break
-    logger.debug("Kruskal su grafo con %s vertici e %s archi ha terminato", G.n_vertexes, G.n_arches)
+    # logger.debug("Kruskal su grafo con %s vertici e %s archi ha terminato", G.n_vertexes, G.n_arches)
     return A
-
-
-

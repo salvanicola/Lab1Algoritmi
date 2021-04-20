@@ -46,8 +46,8 @@ class Graph:
         self.adj[v1].append([v2, w])
         self.adj[v2].append([v1, w])
 
-    # Funzione per l'eliminazione dell'ultimo arco nella lista degli archi. Vengono gestiti anche gli effetti collaterali
-    # sulle liste di adiacenza e di vertici.
+    # Funzione per l'eliminazione dell'ultimo arco nella lista degli archi. Vengono gestiti anche gli effetti
+    # collaterali sulle liste di adiacenza e di vertici.
     def pop(self):
         last = self.arch_list.pop()
         self.n_arches -= 1
@@ -72,6 +72,11 @@ class Graph:
     #     if graph.n_arches > 0:
     #         for x in graph.arch_list:
     #             self.add(x.vert1, x.vert2, x.weight)
+
+    # restituisce la somma del peso totale degli archi del grafo
+    def graph_total_weight(self):
+        return sum(x.weight for x in self.arch_list)
+
 
 # Funzione di generazione di un grafo a partire da un file fornito in input.
 def graph_generator(file):

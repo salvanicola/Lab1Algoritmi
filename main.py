@@ -7,7 +7,7 @@
 # Press the green button in the gutter to run the script.
 import gc
 import logging
-from numpy import average, multiply
+from numpy import average
 from progress.bar import Bar
 
 from graph import graph_generator, Graph
@@ -43,18 +43,25 @@ def upload_graph():
     return graphs
 
 
-def plotting_plot(t, comp, arch):
-    constant = [round((t[i]/(comp[i]*arch[i])), 3) for i in range(len(comp))]
-    logger.debug("constant %s \n vertexes %s \n arch %s", constant, comp, arch)
-    # references = multiply(comp, constant)
-    references = [160 * c * a for c, a in zip(comp, arch)]
-    # references = [s * 240 for s in references]
-    # references = [240 * size * a for size, a in (comp, arch)]
-    plt.plot(comp, t)
-    plt.plot(comp, references)
+def mxn(a, b):
+    return a * b
+
+
+def log_n_m_n(a, b):
+    return math.log(a) * (a + b)
+
+
+def plotting_plot(t, vert, arches, fun):
+    comp = [round(mxn(vert[i], arches[i]), 3) for i in range(len(vert))]
+    constant = [round((t[i] / comp[i]), 3) for i in range(len(comp))]
+    references = [round(average(constant) * comp[i], 3) for i in range(len(comp))]
+    # logger.debug("references %s \n constant %s \n constants %s \n complexity %s \n vertexes %s \n arch %s \n times %s", references, average(constant), constant, comp, vert, arches, t)
+    plt.plot(vert, t)
+    plt.plot(vert, references)
     plt.legend(["Measure time", "ApproxTime"])
     plt.ylabel('Operation time')
     plt.xlabel('n')
+    plt.title(fun.__name__.title())
     plt.show()
     logger.debug("plotted")
 
@@ -65,37 +72,57 @@ def testing(g, function, **args):
     arch_num = []
     current_instance = g[0].n_vertexes
     instance_list = []
-    bar = Bar('Processing', max=len(g), check_tty=False)
+    results = []
+    bar = Bar('Processing ' + function.__name__.title(), max=len(g), check_tty=False)
     for x, s in zip(g, range(len(g))):
         bar.next()
         num_calls = 1
-        if x.n_vertexes < 400:
+        if x.n_vertexes < 1000:
             num_calls = 100
         if x.n_vertexes != current_instance:
-            avg_comp = average([c[0] for c in instance_list])
-            avg_arch = average([c[1] for c in instance_list])
-            logger.debug("--- %s ns --- for %s", avg_comp, current_instance)
-            times.append(average(instance_list))
-            arch_num.append(avg_arch)
-            complexity.append(current_instance)
-            instance_list = []
+            update_data(instance_list, times, arch_num, complexity, current_instance)
+        out = x
+        # -----------------start-------------------
         gc.disable()
         start_time = time.perf_counter_ns()
         for i in range(num_calls):
-            function(x)
+            # function(x, x.vert_list[0])
+            out = function(x, x.vert_list[0])
         stop_time = time.perf_counter_ns()
         gc.enable()
-        instance_list.append([(stop_time - start_time) / num_calls, x.n_arches])
+        # -----------------stop-------------------
+
+        duration = stop_time - start_time
+        instance_list.append([duration / num_calls, x.n_arches])
         current_instance = x.n_vertexes
 
+        # costruisco un array per visualizzare i risultati
+        if function.__name__.title() == "Prim":
+            gr = Graph(len(out))
+            for m in out:
+                if m.parent is not None:
+                    gr.add(m.parent.id, m.id, m.key)
+            out = gr
+        results.append(out.graph_total_weight())
+
     bar.finish()
-    avg_comp = average([c[0] for c in instance_list])
-    avg_arch = average([c[1] for c in instance_list])
-    logger.debug("--- %s ns --- for %s", avg_comp, current_instance)
-    times.append(avg_comp)
-    arch_num.append(avg_arch)
-    complexity.append(current_instance)
-    return times, complexity, arch_num
+    update_data(instance_list, times, arch_num, complexity, current_instance)
+    return times, complexity, arch_num, results
+
+
+def update_data(ins, tim, ar, comp, curr):
+    avg_times = average([c[0] for c in ins])
+    avg_arch = average([c[1] for c in ins])
+    tim.append(avg_times)
+    ar.append(avg_arch)
+    comp.append(curr)
+
+
+def is_result_right(result1, result2):
+    if result1 == result2:
+        logger.debug("i risultati sono corretti")
+    else:
+        logger.debug("sgreva non sa programmare un cazzo")
 
 
 logger = logging.getLogger('tipper')
@@ -104,5 +131,8 @@ logger.addHandler(logging.StreamHandler())
 
 if __name__ == '__main__':
     graphs = upload_graph()
-    times, complexity, arch = testing(graphs, kruskalNaive)
-    plotting_plot(times, complexity, arch)
+    function = kruskalNaive
+    _, _, _, res1 = testing(graphs, prim)
+    times, complexity, arch, res2 = testing(graphs, function)
+    is_result_right(res1, res2)
+    plotting_plot(times, complexity, arch, function)

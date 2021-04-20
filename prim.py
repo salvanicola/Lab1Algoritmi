@@ -11,7 +11,7 @@ from progress.bar import Bar
 def prim(G, s):
     # Inizializzazione di una semplice progress bar per verificare l'operazione in corso.
     # with progressbar.ProgressBar(G.n_vertexes) as bar:
-        logger = logging.getLogger('tipper')
+    #     logger = logging.getLogger('tipper')
         # logger.debug("ESEGUO prim su grafo con %s vertici e %s archi", G.n_vertexes, G.n_arches)
         vert = []
         nodes = []
@@ -49,6 +49,7 @@ def prim(G, s):
                     q.decrease_key(nodes[v_vert], v_arch[1])
             initial_node_number = initial_node_number + 1
             # bar.update(initial_node_number)
+        return vert
 
         # logger.debug("FINITO prim su grafo con %s vertici e %s archi.", G.n_vertexes, G.n_arches)
 

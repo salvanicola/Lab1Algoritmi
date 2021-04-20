@@ -20,6 +20,7 @@ class Node:
         # Marcatura del nodo, utilizzata da alcune operazioni specifiche.
         self.mark = False
 
+
 class FibonacciHeap:
     # Puntatore ad un elemento della lista doppiamente linkata e circolare di componenti dell'heap.
     # Agisce come testa e riferimento all'intera struttura heap.
@@ -60,10 +61,10 @@ class FibonacciHeap:
         self.total_num_elements += 1
         return node
 
-    # Funzione per l'estrazione del minimo elemento dall'heap, gestita in vari passi. Primo, viene preso il nodo contenente
-    # il minimo elemento e lo rimuove. I suoi figli diventano radici di nuovi alberi. Se il numero di figli era d, è necessario
-    # tempo O(d) per processare tutte le nuove root ed il potenziale aumento di d-1. Quindi, il tempo di esecuzione ammortizzato
-    # di questa fase è O(d) = O(log n).
+    # Funzione per l'estrazione del minimo elemento dall'heap, gestita in vari passi. Primo, viene preso il nodo
+    # contenente il minimo elemento e lo rimuove. I suoi figli diventano radici di nuovi alberi. Se il numero di
+    # figli era d, è necessario tempo O(d) per processare tutte le nuove root ed il potenziale aumento di d-1.
+    # Quindi, il tempo di esecuzione ammortizzato di questa fase è O(d) = O(log n).
     def extract_minimum(self):
         m = self.min_node
         if m is None:
@@ -87,8 +88,9 @@ class FibonacciHeap:
             self.min_node = self.find_min_node()
         return m.id
 
-    # Funzione per la riduzione del valore della chiave di un nodo, e se la proprietà dell'heap viene violata (la nuova chiave
-    # è minore di quella del suo parent), viene effettuato il cut (eventualmente ricorsivo) del nodo dai suoi parent.
+    # Funzione per la riduzione del valore della chiave di un nodo, e se la proprietà dell'heap viene violata (la
+    # nuova chiave è minore di quella del suo parent), viene effettuato il cut (eventualmente ricorsivo) del nodo dai
+    # suoi parent.
     def decrease_key(self, node, v):
         if v >= node.value:
             raise ValueError("Cannot decrease key with a value greater than what it already is.")
@@ -101,7 +103,8 @@ class FibonacciHeap:
             self.min_node = node
         return
 
-    # Funzione per il cut di un nodo dai suoi parent, rimuovendolo quindi dalla lista di figli ed inserendolo in root list.
+    # Funzione per il cut di un nodo dai suoi parent, rimuovendolo quindi dalla lista di figli ed inserendolo in root
+    # list.
     def cut(self, node, parent):
         self.remove_from_child_list(parent, node)
         parent.deg -= 1
@@ -118,7 +121,6 @@ class FibonacciHeap:
             else:
                 self.cut(node, p)
                 self.cascading_cut(p)
-
 
     # Funzione per l'unione di un nodo con la root list tramite la sua aggiunta nella seconda posizione della lista.
     def meld_into_root_list(self, node):
@@ -177,7 +179,7 @@ class FibonacciHeap:
     def merge_nodes(self, node, other):
         self.remove_from_root_list(other)
         other.left = other.right = other
-        # Adding other node to child list of the frst one.
+        # Adding other node to child list of the first one.
         self.merge_with_child_list(node, other)
         node.deg += 1
         other.parent = node
