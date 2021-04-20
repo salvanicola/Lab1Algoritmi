@@ -62,7 +62,9 @@ def dfs_iter(graph, s, visited):
         # non è stato ancora visitato, questi viene aggiunto in fondo allo stack.
         for n in graph.adj[s]:
             if not visited[n[0]]:
-                stack.append(n)
+                stack.append(n[0])
+            elif n[0] == s:
+                return True
     # Se nessun ciclo è stato trovato, viene ritornato False.
     return False
 
