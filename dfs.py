@@ -24,7 +24,5 @@ def dfs_iter(graph, s, visited):
         for n in graph.adj[s]:
             if not visited[n[0]]:
                 stack.append(n[0])
-            elif n[0] == s:
-                return True
     # Se nessun ciclo è stato trovato, viene ritornato False.
     return False

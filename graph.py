@@ -18,6 +18,7 @@ class Arc:
             return self.vert1
         return None
 
+
 class Graph:
     # Funzione di inizializzazione del grafo.
     def __init__(self, n_v):
@@ -58,6 +59,19 @@ class Graph:
             self.adj[last.vert2].remove([last.vert1, last.weight])
             if len(self.adj[last.vert2]) == 0:
                 self.vert_list[last.vert2] = None
+
+    # Valutare se eliminarla
+    # def incident_edges(self, s):
+    #     for x in self.arch_list:
+    #         if x.vert1 == s.id or x.vert2 == s.id:
+    #             yield x
+
+    # Valutare se eliminarla
+    # def deepcopy(self, graph, n_vertexes):
+    #     self.__init__(n_vertexes)
+    #     if graph.n_arches > 0:
+    #         for x in graph.arch_list:
+    #             self.add(x.vert1, x.vert2, x.weight)
 
 # Funzione di generazione di un grafo a partire da un file fornito in input.
 def graph_generator(file):
