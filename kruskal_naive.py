@@ -19,14 +19,13 @@ def kruskalNaive(G):
         # Viene aggiunto un arco al grafo dell'MST.
         A.add(e.vert1, e.vert2, e.weight)
         # Ottimizzazione suggerita a lezione, per una terminazione anticipata dell'algoritmo.
+        visited = [False] * G.n_vertexes
+        # È stato scelto l'algoritmo DFS per il controllo sulla ciclicità del grafo.
+        if dfs_iter(A, e.vert1, visited):
+            # Qualora il grafo fosse ciclico, viene rimosso l'ultimo arco aggiunto.
+            A.pop()
         if A.n_arches == G.n_vertexes - 1:
             break
-        else:
-            visited = [False] * G.n_vertexes
-            # È stato scelto l'algoritmo DFS per il controllo sulla ciclicità del grafo.
-            if dfs_iter(A, e.vert1, visited):
-                # Qualora il grafo fosse ciclico, viene rimosso l'ultimo arco aggiunto.
-                A.pop()
     logger.debug("Kruskal su grafo con %s vertici e %s archi ha terminato", G.n_vertexes, G.n_arches)
     return A
 
