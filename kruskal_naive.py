@@ -7,7 +7,6 @@ from merge_sort import mergeSort
 
 
 def kruskalNaive(G, *args):
-    logger = logging.getLogger('tipper')
     # Inizializzo un grafo vuoto, ovvero con un numero di vertici vuoti uguale a G, per evitare l'uscita dai limiti
     # durante l'assegnazione del valore dei vertici. Viene inoltre convertita la lista di archi a deque, per favorire
     # l'operazione di pop ed aggiunta archi.

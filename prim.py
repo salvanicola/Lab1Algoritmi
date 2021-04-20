@@ -1,18 +1,9 @@
-import logging
-
-import progressbar
-
 from heap import FibonacciHeap, Node
 from graph import Vertex
-import time
-from progress.bar import Bar
-
 
 def prim(G, s):
     # Inizializzazione di una semplice progress bar per verificare l'operazione in corso.
     # with progressbar.ProgressBar(G.n_vertexes) as bar:
-    #     logger = logging.getLogger('tipper')
-        # logger.debug("ESEGUO prim su grafo con %s vertici e %s archi", G.n_vertexes, G.n_arches)
         vert = []
         nodes = []
         q = FibonacciHeap()
@@ -29,7 +20,6 @@ def prim(G, s):
             nodes.append(n)
             q.insert(n)
 
-        initial_node_number = 0
 
         # Viene iterato un ciclo while, fino a che non vengono esauriti tutti gli elementi del Fibonacci Heap.
         while q.total_num_elements > 0:
@@ -47,9 +37,5 @@ def prim(G, s):
                     # Viene aggiornata la chiave del vertice all'interno del Fibonacci Heap con il valore dell'arco
                     # preso in esame.
                     q.decrease_key(nodes[v_vert], v_arch[1])
-            initial_node_number = initial_node_number + 1
-            # bar.update(initial_node_number)
         return vert
-
-        # logger.debug("FINITO prim su grafo con %s vertici e %s archi.", G.n_vertexes, G.n_arches)
 

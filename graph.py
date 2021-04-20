@@ -18,7 +18,6 @@ class Arc:
             return self.vert1
         return None
 
-
 class Graph:
     # Funzione di inizializzazione del grafo.
     def __init__(self, n_v):
@@ -46,8 +45,8 @@ class Graph:
         self.adj[v1].append([v2, w])
         self.adj[v2].append([v1, w])
 
-    # Funzione per l'eliminazione dell'ultimo arco nella lista degli archi. Vengono gestiti anche gli effetti
-    # collaterali sulle liste di adiacenza e di vertici.
+    # Funzione per l'eliminazione dell'ultimo arco nella lista degli archi. Vengono gestiti anche gli effetti collaterali
+    # sulle liste di adiacenza e di vertici.
     def pop(self):
         last = self.arch_list.pop()
         self.n_arches -= 1
@@ -59,24 +58,6 @@ class Graph:
             self.adj[last.vert2].remove([last.vert1, last.weight])
             if len(self.adj[last.vert2]) == 0:
                 self.vert_list[last.vert2] = None
-
-    # Valutare se eliminarla
-    # def incident_edges(self, s):
-    #     for x in self.arch_list:
-    #         if x.vert1 == s.id or x.vert2 == s.id:
-    #             yield x
-
-    # Valutare se eliminarla
-    # def deepcopy(self, graph, n_vertexes):
-    #     self.__init__(n_vertexes)
-    #     if graph.n_arches > 0:
-    #         for x in graph.arch_list:
-    #             self.add(x.vert1, x.vert2, x.weight)
-
-    # restituisce la somma del peso totale degli archi del grafo
-    def graph_total_weight(self):
-        return sum(x.weight for x in self.arch_list)
-
 
 # Funzione di generazione di un grafo a partire da un file fornito in input.
 def graph_generator(file):
