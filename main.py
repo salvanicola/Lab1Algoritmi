@@ -14,7 +14,7 @@ from kruskal_naive import kruskalNaive
 from prim import prim
 
 ###################
-# mac fix
+# Per evitare problemi su Mac i file dei grafi vengono ordinati in ordine crescente.
 import re
 
 numbers = re.compile(r'(\d+)')
@@ -25,12 +25,10 @@ def numerical_sort(value):
     parts[1::2] = map(int, parts[1::2])
     return parts
 
-
 ####################
 
-# ho dovuto ordinare i file per nome (ty stefano lavori)
+# Funzione per l'upload dei file di input data.
 def upload_graph():
-    # files = glob.glob("mst_dataset/*.txt")
     gs = []
     for infile in sorted(glob.glob("mst_dataset/*.txt"), key=numerical_sort):
         gs.append(graph_generator(infile))
@@ -53,7 +51,6 @@ def plotting_plot(t, vert, arches, fun):
     comp = [round(log_n_m(vert[i], arches[i]), 3) for i in range(len(vert))]
     constant = [round((t[i] / comp[i]), 3) for i in range(len(comp))]
     references = [round(average(constant) * comp[i], 3) for i in range(len(comp))]
-    # logger.debug("references %s \n constant %s \n constants %s \n complexity %s \n vertexes %s \n arch %s \n times %s", references, average(constant), constant, comp, vert, arches, t)
     plt.plot(vert, t)
     plt.plot(vert, references)
     plt.legend(["Measure time", "ApproxTime"])

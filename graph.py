@@ -60,20 +60,15 @@ class Graph:
             if len(self.adj[last.vert2]) == 0:
                 self.vert_list[last.vert2] = None
 
-    # def initialize_union_find(self):
-    #     for x in self.vert_list
-
-    # il nodo y viene inserito come figlio di x
+    # Funzione per l'inserimento del nodo y come figlio del nodo x.
     def union(self, x, y):
         self.vert_list[x].parent = y
 
-    # trova la radice dell'albero a partire da s
+    # Funzione utilizzata per trovare la radice dell'albero a partire da s.
     def find(self, s):
         while self.vert_list[s].parent is not None:
             s = self.vert_list[s].parent
         return s
-
-
 
 # Funzione di generazione di un grafo a partire da un file fornito in input.
 def graph_generator(file):

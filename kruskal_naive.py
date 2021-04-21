@@ -14,7 +14,7 @@ def kruskalNaive(G, *args):
     # L'algoritmo di merge sort qui utilzzato ha complessità O(n*log(n)), come previsto.
     mergeSort(G.arch_list)
     for e in G.arch_list:
-        # Viene aggiunto un arco al grafo dell'MST.
+        # Viene aggiunto un arco al grafo dell'MST, solo se non si tratta di un self loop, altrimenti viene ignorato.
         if e.vert1 != e.vert2:
             A.add(e.vert1, e.vert2, e.weight)
             visited = [False] * G.n_vertexes
