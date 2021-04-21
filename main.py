@@ -1,10 +1,3 @@
-# This is a sample Python script.
-
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-# Press the green button in the gutter to run the script.
 import gc
 import logging
 from numpy import average
@@ -16,6 +9,7 @@ import time
 import glob
 import math
 
+from kruskal import kruskal
 from kruskal_naive import kruskalNaive
 from prim import prim
 
@@ -51,8 +45,12 @@ def log_n_m_n(a, b):
     return math.log(a) * (a + b)
 
 
+def log_n_m(a, b):
+    return math.log(a) * b
+
+
 def plotting_plot(t, vert, arches, fun):
-    comp = [round(mxn(vert[i], arches[i]), 3) for i in range(len(vert))]
+    comp = [round(log_n_m(vert[i], arches[i]), 3) for i in range(len(vert))]
     constant = [round((t[i] / comp[i]), 3) for i in range(len(comp))]
     references = [round(average(constant) * comp[i], 3) for i in range(len(comp))]
     # logger.debug("references %s \n constant %s \n constants %s \n complexity %s \n vertexes %s \n arch %s \n times %s", references, average(constant), constant, comp, vert, arches, t)
@@ -131,7 +129,7 @@ logger.addHandler(logging.StreamHandler())
 
 if __name__ == '__main__':
     graphs = upload_graph()
-    function = kruskalNaive
+    function = kruskal
     _, _, _, res1 = testing(graphs, prim)
     times, complexity, arch, res2 = testing(graphs, function)
     is_result_right(res1, res2)

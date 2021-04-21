@@ -46,8 +46,8 @@ class Graph:
         self.adj[v1].add((v2, w))
         self.adj[v2].add((v1, w))
 
-    # Funzione per l'eliminazione dell'ultimo arco nella lista degli archi. Vengono gestiti anche gli effetti collaterali
-    # sulle liste di adiacenza e di vertici.
+    # Funzione per l'eliminazione dell'ultimo arco nella lista degli archi. Vengono gestiti anche gli effetti
+    # collaterali sulle liste di adiacenza e di vertici.
     def pop(self):
         last = self.arch_list.pop()
         self.n_arches -= 1
@@ -60,18 +60,20 @@ class Graph:
             if len(self.adj[last.vert2]) == 0:
                 self.vert_list[last.vert2] = None
 
-    # Valutare se eliminarla
-    # def incident_edges(self, s):
-    #     for x in self.arch_list:
-    #         if x.vert1 == s.id or x.vert2 == s.id:
-    #             yield x
+    # def initialize_union_find(self):
+    #     for x in self.vert_list
 
-    # Valutare se eliminarla
-    # def deepcopy(self, graph, n_vertexes):
-    #     self.__init__(n_vertexes)
-    #     if graph.n_arches > 0:
-    #         for x in graph.arch_list:
-    #             self.add(x.vert1, x.vert2, x.weight)
+    # il nodo y viene inserito come figlio di x
+    def union(self, x, y):
+        self.vert_list[x].parent = y
+
+    # trova la radice dell'albero a partire da s
+    def find(self, s):
+        while self.vert_list[s].parent is not None:
+            s = self.vert_list[s].parent
+        return s
+
+
 
 # Funzione di generazione di un grafo a partire da un file fornito in input.
 def graph_generator(file):
