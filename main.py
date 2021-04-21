@@ -15,12 +15,14 @@ import re
 
 numbers = re.compile(r'(\d+)')
 
+
 ###################################################
 # --- ordino i grafi letti in maniera crescente ---
 def numerical_sort(value):
     parts = numbers.split(value)
     parts[1::2] = map(int, parts[1::2])
     return parts
+
 
 ####################################################
 
@@ -51,7 +53,7 @@ def plotting_plot(t, vert, arches, fun):
     elif fun.__name__ == "kruskalNaive":
         comp_fun = mxn
     elif fun.__name__ == "kruskal":
-        comp_fun = log_n_m_n
+        comp_fun = log_n_m
     else:
         raise Exception("nessuna funzione trovata con quel nome")
     comp = [round(comp_fun(vert[i], arches[i]), 3) for i in range(len(vert))]
@@ -64,6 +66,7 @@ def plotting_plot(t, vert, arches, fun):
     plt.xlabel('n')
     plt.title(fun.__name__.title())
     plt.show()
+
 
 # prende in input i grafici e le funzioni ed esegue i test su ognuna
 def testing(g, f, **args):
@@ -140,13 +143,12 @@ if __name__ == '__main__':
     graphs = upload_graph()
 
     # eseguo i test sugli algoritmi
-    # times_p, complexity_p, arch_p, res1 = testing(graphs, prim)
-    # times_kn, complexity_kn, arch_kn, res2 = testing(graphs, kruskalNaive)
+    times_p, complexity_p, arch_p, res1 = testing(graphs, prim)
+    times_kn, complexity_kn, arch_kn, res2 = testing(graphs, kruskalNaive)
     times_k, complexity_k, arch_k, res3 = testing(graphs, kruskal)
     # testo se i risultati sono corretti
-    # res1[0] += 1
-    # is_result_right(res1, res2, res3)
+    is_result_right(res1, res2, res3)
     # genero i grafici per ognuno degli algoritmi
-    # plotting_plot(times_p, complexity_p, arch_p, prim)
-    # plotting_plot(times_kn, complexity_kn, arch_kn, kruskalNaive)
+    plotting_plot(times_p, complexity_p, arch_p, prim)
+    plotting_plot(times_kn, complexity_kn, arch_kn, kruskalNaive)
     plotting_plot(times_k, complexity_k, arch_k, kruskal)

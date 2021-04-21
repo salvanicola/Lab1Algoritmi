@@ -18,6 +18,20 @@ class Arc:
             return self.vert1
         return None
 
+class Vertex:
+    # Funzione di inizializzazione di un vertice.
+    def __init__(self, i, k=float('inf')):
+        self.key = k
+        self.parent = None
+        self.id = i
+        # Flag che indica se il vertice è già stato estratto dallo spanning tree.
+        self.flag = False
+        # campo utilizzato nella Union-Find
+        self.size = 1
+
+    # metodo di utility per Union-Find che definisce se un vertice é una root
+    def is_root(self):
+        return self.parent == self.id
 
 class Graph:
     # Funzione di inizializzazione del grafo.
@@ -61,18 +75,26 @@ class Graph:
                 self.vert_list[last.vert2] = None
 
     # Funzione per l'inserimento del nodo y come figlio del nodo x.
-    def union(self, x, y):
-        self.vert_list[x].parent = y
+    def union(self, i, j):
+        iv = self.vert_list[i]
+        jv = self.vert_list[j]
+        if iv.is_root() and jv.is_root():
+            if iv.size >= jv.size:
+                self.vert_list[j].parent = i
+                iv.size = iv.size + jv.size
+            else:
+                self.vert_list[i].parent = j
+                jv.size = iv.size + jv.size
 
     # Funzione utilizzata per trovare la radice dell'albero a partire da s.
     def find(self, s):
-        while self.vert_list[s].parent is not None:
+        while self.vert_list[s].parent is not self.vert_list[s].id:
             s = self.vert_list[s].parent
         return s
 
     def initialize(self):
         for v in self.vert_list:
-            v.parent = None
+            v.parent = v.id
 
     def graph_total_weight(self):
         return sum(x.weight for x in self.arch_list)
@@ -100,13 +122,3 @@ def graph_generator(file):
         return graph
     else:
         raise Exception('graph not coherent')
-
-
-class Vertex:
-    # Funzione di inizializzazione di un vertice.
-    def __init__(self, i, k=float('inf')):
-        self.key = k
-        self.parent = None
-        self.id = i
-        # Flag che indica se il vertice è già stato estratto dallo spanning tree.
-        self.flag = False

@@ -13,9 +13,11 @@ def kruskal(G, *args):
     for e in G.arch_list:
         # Viene aggiunto un arco al grafo dell'MST.
         if e.vert1 != e.vert2:
-            if G.find(e.vert1) != G.find(e.vert2):
+            r1 = G.find(e.vert1)
+            r2 = G.find(e.vert2)
+            if r1 != r2:
                 A.add(e.vert1, e.vert2, e.weight)
-                G.union(e.vert1, e.vert2)
+                G.union(r1, r2)
             # Ottimizzazione suggerita a lezione, per una terminazione anticipata dell'algoritmo.
             if A.n_arches == G.n_vertexes - 1:
                 break
