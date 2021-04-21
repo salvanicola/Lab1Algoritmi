@@ -6,6 +6,7 @@ def kruskal(G, *args):
     # Inizializzo un grafo vuoto, ovvero con un numero di vertici vuoti uguale a G, per evitare l'uscita dai limiti
     # durante l'assegnazione del valore dei vertici. Viene inoltre convertita la lista di archi a deque, per favorire
     # l'operazione di pop ed aggiunta archi.
+    G.initialize()
     A = Graph(G.n_vertexes)
     # L'algoritmo di merge sort qui utilzzato ha complessità O(n*log(n)), come previsto.
     mergeSort(G.arch_list)

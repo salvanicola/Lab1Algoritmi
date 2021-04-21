@@ -70,6 +70,10 @@ class Graph:
             s = self.vert_list[s].parent
         return s
 
+    def initialize(self):
+        for v in self.vert_list:
+            v.parent = None
+
     def graph_total_weight(self):
         return sum(x.weight for x in self.arch_list)
 
