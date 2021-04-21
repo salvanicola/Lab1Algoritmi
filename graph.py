@@ -70,6 +70,10 @@ class Graph:
             s = self.vert_list[s].parent
         return s
 
+    def graph_total_weight(self):
+        return sum(x.weight for x in self.arch_list)
+
+
 # Funzione di generazione di un grafo a partire da un file fornito in input.
 def graph_generator(file):
     n_v = None
