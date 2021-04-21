@@ -103,7 +103,7 @@ def testing(g, f, **args):
                 if m.parent is not None:
                     gr.add(m.parent.id, m.id, m.key)
             out = gr
-        results.append(out.graph_total_weight())
+        # results.append(out.graph_total_weight())
 
     bar.finish()
     update_data(instance_list, times, arch_num, complexity, current_instance)
