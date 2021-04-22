@@ -38,32 +38,27 @@ def mxn(a, b):
     return a * b
 
 
-def log_n_m_n(a, b):
-    return math.log(a) * (a + b)
-
-
-def log_n_m(a, b):
+def mx_log_n(a, b):
     return math.log(a) * b
 
 
 def plotting_plot(t, vert, arches, fun):
     comp_fun = None
-    if fun.__name__ == "prim":
-        comp_fun = log_n_m_n
+    if fun.__name__ == "prim" or fun.__name__ == "kruskal":
+        comp_fun = mx_log_n
     elif fun.__name__ == "kruskalNaive":
         comp_fun = mxn
-    elif fun.__name__ == "kruskal":
-        comp_fun = log_n_m
     else:
         raise Exception("nessuna funzione trovata con quel nome")
     comp = [round(comp_fun(vert[i], arches[i]), 3) for i in range(len(vert))]
     constant = [round((t[i] / comp[i]), 3) for i in range(len(comp))]
     references = [round(average(constant) * comp[i], 3) for i in range(len(comp))]
+    logger.debug("%s", constant)
     plt.plot(vert, t)
     plt.plot(vert, references)
-    plt.legend(["Measure time", "ApproxTime"])
-    plt.ylabel('Operation time')
-    plt.xlabel('n')
+    plt.legend(["Tempo misurato", "Tempo approssimato"])
+    plt.ylabel('Tempo di esecuzione')
+    plt.xlabel('Numero di vertici')
     plt.title(fun.__name__.title())
     plt.show()
 
@@ -100,7 +95,7 @@ def testing(g, f, **args):
         current_instance = x.n_vertexes
 
         # costruisco un array per visualizzare i risultati
-        if f.__name__.title() == "Prim":
+        if f.__name__ == "prim":
             gr = Graph(len(out))
             for m in out:
                 if m.parent is not None:
