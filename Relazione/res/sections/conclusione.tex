@@ -1,0 +1,33 @@
+\section{Scelte tecniche}
+In questa sezione verranno descritte le scelte tecniche e le ottimizzazioni introdotte dal gruppo all'interno dell'elaborato.
+\subsection{Liste di adiacenza}
+Allo scopo di garantire ridurre il tempo computazionale dei tre algoritmi, la struttura \textit{Graph} è stata dotata di liste di adiacenza per tutti i vertici. All'interno di tali liste sono state inserite delle tuple di valori contenenti l'indice del vertice adiacente e il peso dell'arco corrispondente: \texttt{(id, peso)}.
+
+Nello specifico l'implementazione è stata realizzata tramite strutture dati \texttt{set()}. Queste garantiscono non solo l'unicità dei valori contenuti, ma anche una funzione di rimozione in tempo $O(1)$, particolamente utile in Kruskal Naive dove gli archi che generano un ciclo devono venire scartati e rimossi dalla lista.
+
+\subsection{Salto degli archi di self-loop}
+Per ridurre il tempo computazionale degli algoritmi di Kruskal e garantire valori entro i limiti stabiliti dalla sua complessità, è stato introdotto un controllo preventivo sugli archi da inserire. Infatti, qualora l'arco da inserire sia di evidente self-loop \texttt{Arc(Vertex(x), Vertex(x))}, l'aggiunta di quest'ultimo ed il controllo del grafo tramite DFS verranno saltati interamente, essendo infatti impossibile che un MST contenga archi di tale tipologia. Comportando quindi nel complesso un risparmo di tempo considerevole.
+
+\subsection{Analisi delle componenti connesse - DFS}
+Nonostante la maggior parte delle implementazioni dell'algoritmo DFS su interi grafi preveda un'analisi di tutte le componenti connesse del grafo, per verificarne l'eventuale ciclicità, nell'implementazione dell'algoritmo di Kruskal è stato deciso di svolgere tale analisi solo sulla componente connessa relativa all'ultimo arco aggiunto al grafo.
+
+In un contesto standard, infatti, l'algoritmo di DFS riceve in input un intero grafo sconosciuto, di cui non si conoscono le caratteristiche delle varie componenti connesse, che potrebbero essere cicliche o non esserlo. Nel caso dell'implementazione dell'algoritmo di Kruskal, invece, si effettuano aggiunte successive di archi a partire da un grafo vuoto, dopo ognuna delle quali viene effettuato il controllo di ciclicità. Prima di ogni aggiunta possiamo quindi dichiarare di conoscere le caratteristiche delle varie componenti connesse attualmente presenti nel grafico, in quanto già testate dalle iterazioni precedenti.
+
+Nello specifico, dopo l'aggiunta di un arco al grafo è possibile solo uno dei tre seguenti scenari:
+\begin{itemize}
+	\item \textbf{l'arco non viene aggiunto ad alcuna componente connessa esistente}: tale aggiunta non modifica quindi le componenti connesse pre-esistenti, che quindi possiamo già garantire come non cicliche. È quindi sufficiente verificare l'eventuale ciclicità della nuova componente connessa appena generata;
+	\item \textbf{l'arco viene aggiunto ad una componente connessa esistente}: la componente connessa alla quale l'arco è stato aggiunto potrebbe essere diventata ciclica, ed è quindi opportuno verificare tale eventualità. Non è comunque necessario verificare la ciclicità delle altre componenti del grafo, in quanto non impattate da tale aggiunta;
+	\item \textbf{l'arco connette due componenti connesse pre-esistenti}: la connessione da parte dell'arco di due componenti connesse trasforma queste ultime in un'unica componente connessa, facendoci di fatto ritornare ad una situazione non dissimile da quella precedentemente citata. È quindi sufficiente, allo stesso modo, verificare la ciclicità solo della componente connessa appena formata.
+\end{itemize}
+Nel complesso il risparmio sulla quantità di esecuzioni dell'algoritmo DFS si è rivelato essere un elemento importante per ridurre il tempo operazionale dell'algoritmo di Kruskal Naive.
+
+\section{Valutazione finale}
+Dopo aver attentamente esaminato le misurazioni ed i grafici ottenuti dall'esecuzione dei tre algoritmi, possiamo certamente concludere che l'algoritmo di Kruskal con Union-find è il più efficiente di quelli testati.
+
+Come già menzionato, il gruppo ha effettuato un approfondito lavoro di ottimizzazione non solo dei tre algoritmi principali, ma anche delle strutture dati e degli algoritmi ausiliari impiegati.
+
+Nello specifico, la struttura dati sicuramente più impegnativa da realizzare è stata sicuramente il Fibonacci Heap, per poter ottenere un algoritmo di Prim con complessità $O(E*log(V))$. Varie guide di implementazione ricercate sul Web, infatti, riportavano descrizioni di implementazione o snippet di codice generalmente corretti, ma con bug funzionali piuttosto gravi al momento dell'utilizzo (es. loop infiniti sull'iterazione della root list). È stato quindi lavoro del gruppo correggere tali bug e inconsistenze di complessità (es. $O(n)$ nell'operazione di \texttt{extract\_min} invece di $O(log(n)))$.
+
+Per quanto riguarda l'algoritmo di Kruskal Naive, senza dubbio il tempo di esecuzione per gli input più grandi è stato un ostacolo problematico a test multipli ed esaustivi dell'algoritmo su tutto il dataset. Ad incidere su tale valore è sicuramente anche il linguaggio di programmazione Python.
+
+L'implementazione della struttura Union-find per l'algoritmo di Kruskal è stato l'impegno meno problematico dell'intero progetto, richiedendo semplicemente l'introduzione di alcuni metodi alle strutture già esistenti e ridotte modifiche strutturali.

@@ -1,0 +1,160 @@
+\section{Introduzione}
+In questa sezione verranno descritti i tre algoritmi implementati. Tali algoritmi sono:
+\begin{itemize}
+	\item \textbf{algoritmo di Prim} implementato con Fibonacci Heap;
+	\item \textbf{algoritmo di Kruskal} nella sua implementazione "naive";
+	\item \textbf{algoritmo di Kruslal} implementato con Union-Find.
+\end{itemize}
+
+\subsection{Algoritmo di Prim}
+Algoritmo per la determinazione del Minimum Spanning Tree a partire da un grafo non orientato e con pesi non negativi. Viene definito come:
+\begin{itemize}
+	\item \textit{algoritmo greedy}: perchè valuta di volta in volta le soluzioni localmente migliori, senza mettere in discussione le scelte precedenti;
+	\item \textit{algoritmo esatto}: perchè fornisce una soluzione precisa per ogni istanza del problema, senza effettuare arrotondamenti, approssimazioni o imprecisioni di altra natura;
+	\item \textit{algoritmo ottimo}: perchè presenta la soluzione migliore o una delle soluzioni migliori.
+\end{itemize}
+Viene generalmente fonita in input una \textit{lista di adiacenza}, ovvero un array in cui ogni posizione corrisponde ad un vertice, il quale punta ad una generica lista concatenata contenente tutti i vertici adiacenti al vertice considerato. Si assume inoltre che ogni vertice possieda i campi:
+\begin{itemize}
+	\item \texttt{key[v]}: valore associato al vertice;
+	\item \texttt{$\pi$[v]}: puntatore al padre del vertice nel Minimum Spanning Tree.
+\end{itemize}
+I passi dell'algoritmo sono i seguenti:
+\begin{enumerate}
+	\item inizialmente si pongono tutti i campi \texttt{key[v]} a +$\infty$ e tutti i campi \texttt{$\pi$[v]} a \texttt{NIL};
+	\item si prende il vertice fornito in input come radice dell'albero e si pone la sua chiave a 0;
+	\item si inseriscono tutti i vertici rimasti in un MinHeap (nell'implementazione qui proposta) e li si estrae in ordine crescente;
+	\item si scorre quindi la lista delle adiacenze del vertice estratto \texttt{u}, considerando solo i vertici \texttt{v} ancora all'interno del MinHeap precedente;
+	\item per ognuno di essi tale che la sua distanza dal vertice \texttt{u} sia la minore tra tutti quelli considerati, si pone \texttt{$\pi$[v]} uguale a \texttt{u} (inserendo di fatto \texttt{v} nel Minimum Spanning Tree;
+	\item si conclude il ciclo aggiornando il campo \texttt{key[v]} con il valore della distanza tra \texttt{u} e \texttt{v}.
+\end{enumerate}
+La complessità dell'implementazione dell'algoritmo con Fibonacci Heap è: $O(E*log(V))$. Dove $E$ è il numero di archi e $V$ è il numero di vertici.
+
+\subsection{Algoritmo di Kruskal}
+Algoritmo per la determinazione del Minimum Spanning Tree a partire da un grafo non orientato e con pesi non negativi. Viene definito come:
+\begin{itemize}
+	\item \textit{algoritmo ottimo}: perchè presenta la soluzione migliore o una delle soluzioni migliori;
+	\item veloce tanto quanto l'algoritmo di Prim, se implementato propriamente.
+\end{itemize}
+L'idea di base dell'algoritmo è quella di gestire una foresta di alberi disgiunti tra loro in modo tale da selezionare solo gli archi di peso minimo, che collegano tra loro questi alberi. Tutti gli alberi della foresta devono essere aciclici. Dato quindi $G=(V,E)$ un grafo connesso, non orientato e pesato (con $V$ ed $E$ definite come sopra), si consideri:
+\begin{itemize}
+	\item $X$ come sottinsieme degli archi $E$;
+	\item $X$ è inizialmente vuoto;
+	\item $X$ è sottoinsieme di qualche Minimum Spanning Tree;
+	\item si considera $G_x=(V,X)$ un grafo contenente tutti i vertici di $G$;
+	\item inizialmente $G_x$ non contiene archi, la foresta è quindi formata da $|V|$ alberi disgiunti.
+\end{itemize}
+Durante l'esecuzione, l'algoritmo ricerca un arco sicuro da aggiungere alla foresta. Ricerca, fra tutti gli archi che collegano due alberi qualsiasi nella foresta, un arco $(u,v)$ di peso minimo. Viene definita quindi come \textit{invariante} del ciclo:
+\begin{itemize}
+	\item finchè $G_x$ non sarà composta da un solo albero, ogni albero contenuto in $G_x$ sarà aciclico e $G_x$ sarà un sottoinsieme di qualche Minimum Spanning Tree.
+\end{itemize}
+Una generica implementazione dell'algoritmo è così descritta:
+\begin{enumerate}
+	\item viene creata una foresta di grafi;
+	\item vengono ordinati tutti gli archi del grafo in ordine crescente;
+	\item vengono valutati gli archi ordinati, uno per volta, per essere inseriti (se opportuno) nella foresta;
+	\item un arco viene aggiunto alla foresta se: è sicuro, collega due alberi disgiunti e non genera cicli (sempre vero se verificata la seconda condizione).
+\end{enumerate}
+La complessità dell'algoritmo dipende naturalmente dall'implementazione:
+\begin{itemize}
+	\item \textbf{implementazione Naive}: ha complessità $O(V*E)$;
+	\item \textbf{implementazione con Union-Find}: ha complessità $O(E*log(V))$.
+\end{itemize}
+
+\pagebreak
+\section{Scelte implementative}
+In questa sezione verranno discusse le principali scelte implementative e le relative motivazioni.
+\subsection{Linguaggio di programmazione}
+Con riferimento all'esercitazione svolta in classe è stato deciso di svolgere l'attività di Laboratorio utilizzando il linguaggio Python.
+\subsection{Strutture dati per archi, vertici e grafi}
+Di seguito viene descritto come sono modellate la classi \textit{Arc (arco)}, \textit{Vertex (vertice)} e \textit{Graph (grafo)}. \\
+In aggiunta alle strutture, è presente anche un metodo \texttt{graph\_generator}, utilizzato per generare un grafo a partire da un file \texttt{.txt} fornito in input.
+\subsubsection{Arc}
+Possiede quattro campi dati:
+\begin{itemize}
+	\item \textbf{vert1}: che rappresenta il primo vertice dell'arco;
+	\item \textbf{vert2}: che rappresenta il secondo vertice dell'arco;
+	\item \textbf{weight}: che rappresenta il peso associato all'arco;
+	\item \textbf{label}: che rappresenta l'etichetta assegnata all'arco durante l'esecuzione degli algoritmi.
+\end{itemize}
+I suoi metodi sono:
+\begin{itemize}
+	\item \textbf{weight()}: utilizzato per ottenere l'accesso al peso dell'arco;
+	\item \textbf{opposite(s)}: utilizzato per ottenere il vertice opposto a quello fornito ($s$).
+\end{itemize}
+\subsubsection{Vertex}
+Possiede cinque campi dati:
+\begin{itemize}
+	\item \textbf{key}: che rappresenta il valore associato al vertice (\texttt{default = 'inf'});
+	\item \textbf{parent}: che rappresenta il vertice "genitore";
+	\item \textbf{id}: che rappresenta l'identificativo associato al vertice;
+	\item \textbf{flag}: che indica se il vertice è già stato estratto dallo spanning tree;
+	\item \textbf{size}: che indica il numero di vertici presenti nel sotto-albero di cui è radice (utilizzato nell'Union-find).
+\end{itemize}
+Il suo unico metodo è:
+\begin{itemize}
+	\item \textbf{is\_root()}: funzione di utility per l'Union-find, che definisce se un vertice è una root.
+\end{itemize}
+\subsubsection{Graph}
+Possiede cinque campi dati:
+\begin{itemize}
+	\item \textbf{arch\_list}: che rappresenta la lista degli archi contenuti nel grafo;
+	\item \textbf{vert\_list}: che rappresenta la lista dei vertici contenuti nel grafo;
+	\item \textbf{n\_vertex}: che indica il numero totale di vertici attualmente nel grafo;
+	\item \textbf{n\_arches}: che indica il numero totale di archi attualmente nel grafo;
+	\item \textbf{adj}: array che rappresenta le liste di adiacenza per tutti i vertici del grafo. Ovvero una lista di tutti i vertici ad essi adiacenti con relativo peso.
+\end{itemize}
+I suoi metodi sono:
+\begin{itemize}
+	\item \textbf{add(v1, v2, w)}: utilizzato per aggiungere un arco al grafo, aggiornando le liste di adiacenza e la lista degli archi;
+	\item \textbf{pop()}: utilizzato per rimuovere l'ultimo arco nella lista degli archi, aggiornando liste di adiacenza e vertici relativi;
+	\item \textbf{graph\_total\_weight}: utilizzato per ottenere la somma dei pesi di tutti gli archi del grafo.
+\end{itemize}
+Sono presenti inoltre altri metodi relativi alla struttura Union-find, che verranno descritti in seguito, nella sezione dedicata all'implementazione di tale struttura.
+
+\subsection{Implementazione del Fibonacci Heap}
+Fibonacci Heap é una particolare implementazione dell'heap, che mantiene una lista di radici ognuna delle quali deve avere rango diverso. Questa struttura ha un comportamento lazy. L'inserimento di un valore avviene in tempo $O(1)$, perché questo viene inserito direttamente nella lista di grado 0. Il consolidamento della struttura dati, che si occupa di mantenere la proprietà della struttura (cioè che un nodo può avere rango al massimo $log(V)$), é avviato solamente quando viene invocato il metodo \texttt{extract\_min}. La proprietà citata, come il fatto che due radici non possono avere lo stesso rango, non sono quindi esattamente invarianti, perché é mantenuta solamente durante l'esecuzione di un metodo. \\
+L'implementazione della struttura Fibonacci Heap è stata sviluppata con riferimento alla fonte qui riportata: \href{https://github.com/ivan-ristovic/fheap/blob/master/fheap.py}{https://github.com/ivan-ristovic/fheap/blob/master/fheap.py}. \\
+Tale implementazione è stata esaminata, corretta e ri-elaborata per le esigenze del progetto di Laboratorio.
+\subsubsection{Node}
+Questa classe descrive i nodi dell'heap. Contiene i seguenti attributi:
+\begin{itemize}
+	\item \textbf{value}: rappresenta il valore del nodo sulla quale sono eseguiti tutti i confronti. Sono supportati solo valori numerici;
+	\item \textbf{id}: riferimento (tramite numero intero all'indice della tabella nell'algoritmo di Prim) al vertice del grafo;
+	\item \textbf{parent/child/left/right}: puntatori ai nodi nell'heap, rispettivamente il padre, il figlio "preferito", e ai suoi fratelli a destra e a sinistra. La lista dei fratelli é circolare, cioè non esiste una testa;
+	\item \textbf{deg}: é il grado del nodo, cioè il numero di sottoalberi a cui é collegato;
+	\item \textbf{mark}: é un valore booleano utilizzato per marcare i nodi in alcuni metodi.
+\end{itemize}
+\subsubsection{FibonacciHeap}
+Questa classe rappresenta la struttura Fibonacci Heap. Contiene i seguenti campi dati principali:
+\begin{itemize}
+	\item \textbf{root\_list}: è un puntatore che mantiene un riferimento al lista delle radici;
+	\item \textbf{min\_node}: è un riferimento al nodo con \texttt{value} minore nell'heap (che si trova nella lista delle radici);
+	\item \textbf{total\_num\_elements}: è il numero di elementi totali di nodi nell'heap.
+\end{itemize}
+I suoi metodi principali (escludendo quindi quelli a loro supporto) sono:
+\begin{itemize}
+	\item \textbf{insert(node)}: funzione che inserisce un nuovo nodo nella lista di radici dell'heap e aumenta il counter di elementi all'interno dello stesso;
+	\item \textbf{extract\_minimum()}: funzione che Estrae il nodo con chiave minore e consolida l'heap. Per fare questo inserisce i figli del \texttt{min\_node} nella lista delle radici e rimuove il nodo eliminando i suoi riferimenti. Infine viene chiamato il metodo \texttt{consolidate} che verifica che nessuna radice abbia lo stesso grado, nel caso contrario unisce i due alberi inserendo quello con key maggiore come figlio dell'altro. In questo metodo si garantisce, inoltre, che la lunghezza della lista delle radici sia al massimo logaritmica rispetto al numero di elementi nell'heap;
+	\item \textbf{decrease\_key(node, value)}: funzione che assegna un nuovo valore \texttt{value} a un nodo dell'heap , mantenendo l'invariante dello stesso per il quale ogni nodo padre é minore dei nodi figli. Il nodo viene subito aggiornato, viene effettuato il \texttt{cut} del nodo, inserendolo nella lista delle radici e marcato false. Viene poi eseguito un \texttt{cascading\_cut} sul padre del nodo precedente cioè: se il padre di questo non é una radice viene marcato \texttt{(mark = True}), nel caso contrario viene tagliato e si esegue un \texttt{cascading\_cut} su suo padre, fino ad arrivare alla lista delle radici o a un nodo con padre con \texttt{mark = False}. Tornando al nodo aggiornato, viene controllato se la sua nuova value é minore del \texttt{min\_value} attuale e nel caso quest'ultimo viene aggiornato. Il tempo di esecuzione di questo metodo é ammortizzato a costante dato che dipende dal numero di sottoalberi del nodo aggiornato.
+\end{itemize}
+\subsection{Implementazione del Merge sort}
+La realizzazione dell'algoritmo di Kruskal ha richiesto l'implementazione di un algoritmo di Merge Sort in complessità $O(n*log(n))$, per l'ordinamento degli archi dei grafi in base al loro peso. Tale implementazione è avvenuta in maniera semplice e standard.
+\subsection{Implementazione del DFS}
+La realizzazione dell'algoritmo di Kruskal, in versione Naive, ha richiesto l'implementazione di un algoritmo DFS, per il controllo sulla ciclicità del grafo. Dato il numero limitato di possibili esecuzioni ricorsive, il gruppo ha optato per l'implementazione di una sua versione iterativa, con l'impiego di liste di adiacenza e con complessità $O(E+V)$. \\
+Allo scopo di ridurre per quanto possibile il tempo di esecuzione dell'algoritmo DFS, e quindi il suo impatto sull'algoritmo di Kruskal Naive, è stato deciso di interrompere la sua esecuzione non appena venga identificato un ciclo. \\
+Inoltre, quest'implementazione dell'algoritmo DFS non effettua un analisi di tutte le componenti connesse del grafo, in quanto (come verrà trattato in seguito) ai fini dell'algoritmo di Kruskal Naive questo non è necessario.
+\subsection{Implementazione dell'Union-find}
+La Union-find è una struttura dati per la gestione di insiemi disgiunti di oggetti. Le operazioni da essa supportate sono:
+\begin{itemize}
+	\item \textbf{initialize}: funzione che dato un array di oggetti, crea una struttura dati Union-find, con ogni oggetto presente in tale array;
+	\item \textbf{find}: funzione che dato un oggetto $x$, ritorna il nome del set che contiene $x$;
+	\item \textbf{union}: funzione che dati due oggetti $x$, $y$ unisce i set che contengono $x$ e $y$ nel singolo set (solo se i due oggetti non sono già sullo stesso set).
+\end{itemize}
+Le rispettive complessità sono:
+\begin{itemize}
+	\item \textbf{initialize}: $O(n)$;
+	\item \textbf{find}: $O(log(n))$;
+	\item \textbf{union}: $O(log(n))$.
+\end{itemize}
+Dove $n$ è il numero di oggetti nella struttura dati. \\
+Nel progetto la struttura dati è stata implementata tramite l'introduzione di un attributo \texttt{parent}, inizializzato con l'id del vertice stesso, all'interno della classe \textit{Vertex}. Le tre operazioni sono state implementate come metodi della classe \textit{Graph}. A supporto di tali operazioni è stato introdotto nella classe \textit{Vertex} un campo aggiuntivo \texttt{size}, che indica il numero di vertici presenti nel sotto-albero di cui tale vertice è radice, ed un metodo \texttt{is\_root} che definisce se un vertice è una root.

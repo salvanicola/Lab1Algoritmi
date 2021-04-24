@@ -1,0 +1,169 @@
+\section{Risultati ottenuti}
+In questa sezione verranno descritti i risultati ottenuti, corredati da grafi esplicativi e risposte alle domande fornite in consegna.
+\subsection{Domanda 1 - Risultati}
+I risultati relativi ai tempi di esecuzione sono stati ottenuti utilizzando la funzione \\ \texttt{time.perf\_counter\_ns()}, che fornisce la misurazione del tempo in nanosecondi. Il garbage collector é stato disabilitato durante l'esecuzione degli algoritmi. \\ 
+Per realizzare il grafico del tempo di esecuzione effettivo in rapporto alla complessità, sono stati misurati i tempi di esecuzione per i quattro grafi forniti ad ogni dimensione di input, per poi calcolare un loro valore medio da inserire nel grafico. \\
+In aggiunta, per i grafi da meno di 1000 vertici sono stati misurati i tempi di 100 esecuzioni dei singoli algoritmi e calcolata una media, così da rendere più affidabili i risultati. \\
+É stato aggiunto un grafico di riferimento assieme a quello dei tempi, realizzato calcolando la complessità attesa moltiplicata a una costante. La costante é stata calcolata dalla media tra tutti i valori, ottenuti dal seguente calcolo:
+
+\[ TempoPerInput(x) / ComplessitaPerInput(x) \]
+
+Ad esempio per l'algoritmo di Prim si é calcolato per ogni misurazione su grafi con $V$ numero di vertici e $E$ numero di archi (medi) il valore $E*log(V)$.
+Qualora il grafico dei tempi effettivi risulti entro i limiti della complessità asintotica di riferimento (linea sempre inferiore al riferimento), questi verrà ritenuto accettabile
+
+\subsubsection{Tabella risultati}
+I risultati grezzi ottenuti, senza nessuna rielaborazione sono quindi i seguenti:
+
+\definecolor{lightRowColor}{HTML}{fafafa}
+\definecolor{darkRowColor}{HTML}{ffcccb}
+
+\def\arraystretch{1.75}
+\rowcolors{2}{lightRowColor}{darkRowColor}
+\begin{longtable}{ 
+		>{\centering}p{0.13\textwidth} 
+		>{\centering}p{0.13\textwidth}
+		>{\centering}p{0.13\textwidth} 
+		>{\centering}p{0.13\textwidth}
+		>{\centering}p{0.13\textwidth} 
+		>{\centering}p{0.13\textwidth}}
+	
+	\caption{Tabella dei risultati} \\
+	\coloredTableHead
+	\textbf{\color{white}Numero di vertici} & 
+	\textbf{\color{white}Numero di archi} &
+	\textbf{\color{white}Prim} & 
+	\textbf{\color{white}Kruskal Naive} &
+	\textbf{\color{white}Kruskal} & 
+	\textbf{\color{white}Somma pesi MST}
+	\endfirsthead
+	
+	\rowcolor{white}\caption[]{(continua)}\\
+	\coloredTableHead 
+	\textbf{\color{white}Numero di vertici} &
+	\textbf{\color{white}Numero di archi} &
+	\textbf{\color{white}Prim} &
+	\textbf{\color{white}Kruskal Naive} &
+	\textbf{\color{white}Kruskal} &
+	\textbf{\color{white}Somma pesi MST}
+	\endhead
+	
+	$10$ & $9$ & $3.80e+06$ & $2.90e+06$ & $2.19e+06$ & $29316$ \\ \cr	
+	$10$ & $11$ & $4.26e+06$ & $2.76e+06$ & $2.31e+06$ & $16940$ \\ \cr	
+	$10$ & $13$ & $4.89e+06$ & $3.37e+06$ & $2.52e+06$ & $-44448$ \\ \cr	
+	$10$ & $10$ & $4.37e+06$ & $3.37e+06$ & $2.30e+06$ & $25217$ \\ \cr	
+	$20$ & $24$ & $1.03e+07$ & $8.60e+06$ & $5.21e+06$ & $-32021$ \\ \cr
+	$20$ & $24$ & $1.01e+07$ & $9.38e+06$ & $5.34e+06$ & $25130$ \\ \cr
+	$20$ & $28$ & $1.11e+07$ & $1.06e+07$ & $5.85e+06$ & $-41693$ \\ \cr
+	$20$ & $?$ & $?$ & $?$ & $?$ & $?$ \\ \cr
+	$40$ & $56$ & $2.52e+07$ & $2.10e+07$ & $1.14e+07$ & $-114203$ \\ \cr
+	$40$ & $50$ & $2.24e+07$ & $2.45e+07$ & $1.15e+07$ & $-31929$ \\ \cr
+	$40$ & $50$ & $2.26e+07$ & $2.33e+07$ & $1.12e+07$ & $-79570$ \\ \cr
+	$40$ & $52$ & $2.46e+07$ & $2.27e+07$ & $1.13e+07$ & $-79741$ \\ \cr
+	$80$ & $108$ & $5.49e+07$ & $8.47e+07$ & $2.48e+07$ & $-139926$ \\ \cr
+	$80$ & $99$ & $5.60e+07$ & $9.03e+07$ & $2.38e+07$ & $-198094$ \\ \cr
+	$80$ & $104$ & $5.57e+07$ & $8.12e+07$ & $2.44e+07$ & $-110571$ \\ \cr 
+	$80$ & $114$ & $5.74e+07$ & $1.13e+08$ & $2.69e+07$ & $-233320$ \\ \cr
+	$100$ & $136$ & $7.01e+07$ & $1.43e+08$ & $3.25e+07$ & $-141960$ \\ \cr
+	$100$ & $129$ & $7.27e+07$ & $1.12e+08$ & $3.10e+07$ & $-271743$ \\ \cr
+	$100$ & $137$ & $7.12e+07$ & $9.28e+07$ & $3.16e+07$ & $-288906$ \\ \cr
+	$100$ & $132$ & $7.51e+07$ & $1.11e+08$ & $3.18e+07$ & $-229506$ \\ \cr
+	$200$ & $267$ & $1.53e+08$ & $4.10e+08$ & $6.82e+07$ & $-510185$ \\ \cr
+	$200$ & $269$ & $1.55e+08$ & $3.79e+08$ & $6.74e+07$ & $-515136$ \\ \cr
+	$200$ & $269$ & $1.48e+08$ & $3.79e+08$ & $6.73e+07$ & $-444357$ \\ \cr
+	$200$ & $267$ & $1.55e+08$ & $4.82e+08$ & $6.84e+07$ & $-393278$ \\ \cr
+	$400$ & $540$ & $3.35e+08$ & $1.53e+09$ & $1.48e+08$ & $-1119906$ \\ \cr
+	$400$ & $518$ & $3.16e+08$ & $1.34e+09$ & $1.45e+08$ & $-788168$ \\ \cr
+	$400$ & $538$ & $3.28e+08$ & $1.40e+09$ & $1.46e+08$ & $-895704$ \\ \cr
+	$400$ & $526$ & $3.21e+08$ & $1.51e+09$ & $1.44e+08$ & $-733645$ \\ \cr
+	$800$ & $1063$ & $6.79e+08$ & $5.82e+09$ & $3.07e+08$ & $-1541291$ \\ \cr
+	$800$ & $1058$ & $6.86e+08$ & $5.62e+09$ & $3.09e+08$ & $-1578294$ \\ \cr
+	$800$ & $1076$ & $6.92e+08$ & $5.41e+09$ & $3.12e+08$ & $-1664316$ \\ \cr
+	$800$ & $1049$ & $6.86e+08$ & $5.79e+09$ & $3.13e+08$ & $-1652119$ \\ \cr
+	$1000$ & $1300$ & $8.70e+06$ & $8.44e+07$ & $4.47e+06$ & $-2089013$ \\ \cr
+	$1000$ & $1313$ & $8.95e+06$ & $9.53e+07$ & $4.62e+06$ & $-1934208$ \\ \cr
+	$1000$ & $1328$ & $8.89e+06$ & $9.43e+07$ & $4.60e+06$ & $-2229428$ \\ \cr
+	$1000$ & $1344$ & $8.83e+06$ & $9.36e+07$ & $4.56e+06$ & $-2356163$ \\ \cr
+	$2000$ & $2699$ & $1.91e+07$ & $3.85e+08$ & $9.66e+06$ & $-4811598$ \\ \cr
+	$2000$ & $2654$ & $1.84e+07$ & $3.74e+08$ & $9.52e+06$ & $-4739387$ \\ \cr
+	$2000$ & $2652$ & $1.86e+07$ & $3.64e+08$ & $9.48e+06$ & $-4717250$ \\ \cr
+	$2000$ & $2677$ & $1.85e+07$ & $3.80e+08$ & $9.83e+06$ & $-4537267$ \\ \cr
+	$4000$ & $5360$ & $3.88e+07$ & $1.52e+09$ & $2.09e+07$ & $-8722212$ \\ \cr
+	$4000$ & $5315$ & $3.84e+07$ & $1.54e+09$ & $2.27e+07$ & $-9314968$ \\ \cr
+	$4000$ & $5340$ & $3.90e+07$ & $1.42e+09$ & $2.21e+07$ & $-9845767$ \\ \cr
+	$4000$ & $5368$ & $3.89e+07$ & $1.58e+09$ & $2.14e+07$ & $-8681447$ \\ \cr
+	$8000$ & $10705$ & $8.27e+07$ & $6.17e+09$ & $4.48e+07$ & $-17844628$ \\ \cr
+	$8000$ & $10670$ & $8.21e+07$ & $5.95e+09$ & $4.80e+07$ & $-18798446$ \\ \cr
+	$8000$ & $10662$ & $8.11e+07$ & $6.47e+09$ & $4.80e+07$ & $-18741474$ \\ \cr
+	$8000$ & $10757$ & $8.24e+07$ & $7.32e+09$ & $4.61e+07$ & $-18178610$ \\ \cr
+	$10000$ & $13301$ & $1.03e+08$ & $1.11e+10$ & $6.16e+07$ & $-22079522$ \\ \cr
+	$10000$ & $13340$ & $1.06e+08$ & $1.00e+10$ & $7.11e+07$ & $-22338561$ \\ \cr
+	$10000$ & $13287$ & $1.04e+08$ & $9.48e+09$ & $6.23e+07$ & $-22581384$ \\ \cr
+	$10000$ & $13311$ & $1.04e+08$ & $9.81e+09$ & $6.60e+07$ & $-22606313$ \\ \cr
+	$20000$ & $26667$ & $2.18e+08$ & $4.42e+10$ & $1.46e+08$ & $-45962292$ \\ \cr
+	$20000$ & $26826$ & $2.21e+08$ & $4.55e+10$ & $1.47e+08$ & $-45195405$ \\ \cr
+	$20000$ & $26673$ & $2.24e+08$ & $4.46e+10$ & $1.43e+08$ & $-47854708$ \\ \cr
+	$20000$ & $26670$ & $2.25e+08$ & $4.73e+10$ & $1.25e+08$ & $-46418161$ \\ \cr
+	$40000$ & $53415$ & $4.77e+08$ & $2.71e+11$ & $3.14e+08$ & $-92003321$ \\ \cr
+	$40000$ & $53446$ & $4.90e+08$ & $2.70e+11$ & $2.99e+08$ & $-94397064$ \\ \cr
+	$40000$ & $53242$ & $4.95e+08$ & $2.80e+11$ & $3.04e+08$ & $-88771991$ \\ \cr
+	$40000$ & $53319$ & $4.82e+08$ & $2.81e+11$ & $3.03e+08$ & $-93017025$ \\ \cr
+	$80000$ & $106914$ & $9.90e+08$ & $1.35e+12$ & $6.78e+08$ & $-186834082$ \\ \cr
+	$80000$ & $106633$ & $1.00e+09$ & $1.26e+12$ & $6.70e+08$ & $-185997521$ \\ \cr
+	$80000$ & $106586$ & $1.04e+09$ & $1.06e+12$ & $6.70e+08$ & $-182065015$ \\ \cr
+	$80000$ & $106554$ & $1.02e+09$ & $1.01e+12$ & $6.66e+08$ & $-180793224$ \\ \cr
+	$100000$ & $133395$ & $1.29e+09$ & $1.75e+12$ & $8.16e+08$ & $-230698391$ \\ \cr
+	$100000$ & $133214$ & $1.29e+09$ & $1.76e+12$ & $8.36e+08$ & $-230168572$ \\ \cr
+	$100000$ & $133524$ & $1.31e+09$ & $1.77e+12$ & $8.38e+08$ & $-231393935$ \\ \cr
+	$100000$ & $133463$ & $1.30e+09$ & $1.74e+12$ & $8.46e+08$ & $-231011693$ \\ \cr	
+\end{longtable}
+\pagebreak
+Com'è visibile nella tabella, i pesi dei MST risultanti dai tre differenti algoritmi sono coincidenti. Questo, combinato con le pre e le post condizioni, ci ha confermato la correttezza dei tre algoritmi.
+
+\subsubsection{Risultato di Prim}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{"../Prim Graph"}
+	\caption[]{Grafico dei tempi misurati per l'algoritmo di Prim.}
+	\label{fig:prim-graph}
+\end{figure}
+Come visibile dal grafico, i tempi misurati risultano sempre inferiori alla linea di riferimento per il caso peggiore, calcolata utilizzando complessità relativa all'implementazione di Prim con Fibonacci Heap: $O(E*log(V))$. La coincidenza dell'andamento delle due linee ci dà ulteriore conferma della corenza dell'implementazione nei confronti della complessità asintotica teorica prevista. \\
+
+\textbf{Nota}: in un test precedente di tale implementazione era stata inserita una complessità $O((V + E)*log(V))$, con erroneo riferimento ad un'implementazione con heap generico (binario). Tale errore di percorso ci ha dato la possibilità di osservare direttamente la differenza di complessità tra implementazione con Fibonacci Heap e Heap binario all'interno del grafico, la cui linea di riferimento possedeva un andamento decisamente diverso rispetto a quella di misurazione.
+
+\subsubsection{Risultato di Kruskal Naive}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{"../Kruskal Graph"}
+	\caption{Grafico dei tempi misurati per l'algoritmo di Kruskal Naive.}
+	\label{fig:kruskal-graph}
+\end{figure}
+Come visibile dal grafico, i tempi misurati risultano sempre inferiori alla linea di riferimento per il caso peggiore, calcolata utilizzando complessità relativa all'implementazione Naive di Kruskal: $O(E*V)$. Come per l'algoritmo precedente, la coincidenza dell'andamento delle due linee ci dà ulteriore conferma della corenza dell'implementazione nei confronti della complessità asintotica teorica prevista.
+
+\pagebreak
+
+\subsubsection{Risultato di Kruskal con Union-find}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{"../Kruskal Opt Graph"}
+	\caption{Grafico dei tempi misurati per l'algoritmo di Kruskal con Union-find.}
+	\label{fig:kruskal-opt-graph}
+\end{figure}
+Come visibile dal grafico, i tempi misurati risultano sempre inferiori alla linea di riferimento per il caso peggiore, calcolata utilizzando complessità relativa all'implementazione con Union-find di Kruskal: $O(E*log(V))$. Come per gli algoritmi precedenti, la coincidenza dell'andamento delle due linee ci dà ulteriore conferma della corenza dell'implementazione nei confronti della complessità asintotica teorica prevista.
+
+\subsection{Domanda 2 - Comparazione algoritmi}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{"../Comparison Graph"}
+	\caption{Grafico di comparazione tra i tempi di esecuzione dei tre algoritmi.}
+	\label{fig:comparison-graph}
+\end{figure}
+Come è possibile notare, la differenza tra i tempi di esecuzione dei vari algoritmi per input di grande dimensione è molto ampia. Ad esempio per l'esecuzione di Kruskal Naive su grafi di input massimo (100000 vertici) il tempo richiesto è di più di un'ora per grafo, mentre per gli algoritmi di Prim e Kruskal con Union-find i risultati spaziano sempre nell'intervallo dai 2 ai 4 secondi per grafo. Questo è naturalmente legato alla diversa complessità asintotica tra il primo algoritmo ($O(V*E)$) ed i seguenti ($O(E*log(V)$), il che rende persino difficile notare la differenza di tempi misurati per il secondo e terzo algoritmo.
+
+Per rendere più chiara questa differenza, di seguito viene presentato un grafico di comparazione dei due algoritmi più rapidi:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{"../2-Comparison Graph"}
+	\caption{Grafico di comparazione tra i tempi di esecuzione di Prim e Kruskal con Union-find.}
+	\label{fig:2-comparison-graph}
+\end{figure}
+Pur essendo caratterizzati dalla stessa complessità asintotica, è possibile notare come l'algoritmo di Kruskal con Union-find sia chiaramente il più rapido. Considerando in particolare anche il basso peso in memoria di tale struttura, in confronto al Fibonacci Heap impiegato da Prim, è senza dubbio possibile definire tale algoritmo come il più efficiente dei tre esaminati.

@@ -1,0 +1,28 @@
+\documentclass[a4paper]{article}
+
+\input{../Latex/common_commands.tex}
+\input{./config/commands.tex}
+\input{../Latex/configs.tex}
+
+\begin{document}
+	 % numerazione delle tabelle dipendente dalla section ( e non dalla subsection)
+	 \counterwithin{table}{section}
+	 
+	 % copertina
+	 \input{../Latex/copertina.tex}
+	 
+	 % indice
+	 \renewcommand*\contentsname{Sommario}
+	 \tableofcontents
+	 \pagebreak
+	 
+	 % informazioni generali
+	 \input{./res/sections/intro.tex}	 
+	 \pagebreak
+	 
+	 % scelte implementative
+	 \input{./res/sections/risultati.tex}
+	 \pagebreak
+	 
+	 \input{./res/sections/conclusione.tex}
+\end{document}
