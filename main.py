@@ -105,7 +105,7 @@ def testing(g, f, **args):
         duration = stop_time - start_time
         # Raccolgo i dati dei tempi e del numero di archi in questo array
         instance_list.append([duration / num_calls, x.n_arches])
-        current_instance = x.n_vertexescomme
+        current_instance = x.n_vertexes
 
         # Costruisco un array per visualizzare i risultati
         if f.__name__ == "prim":
