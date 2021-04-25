@@ -26,10 +26,10 @@ class Vertex:
         self.id = i
         # Flag che indica se il vertice è già stato estratto dallo spanning tree.
         self.flag = False
-        # campo utilizzato nella Union-Find
+        # Campo che indica il numero di vertici presenti nel sotto-albero di cui è radice, utilizzato nella Union-Find
         self.size = 1
 
-    # metodo di utility per Union-Find che definisce se un vertice é una root
+    # Funzione di utility per Union-Find che definisce se un vertice é una root.
     def is_root(self):
         return self.parent == self.id
 
@@ -78,6 +78,8 @@ class Graph:
     def union(self, i, j):
         iv = self.vert_list[i]
         jv = self.vert_list[j]
+        # Verifica sei vertici sono entrambi root (secondo Union-find), e in caso positivo
+        # pone quello con grado maggiore come "parent" dell'altro.
         if iv.is_root() and jv.is_root():
             if iv.size >= jv.size:
                 self.vert_list[j].parent = i
@@ -92,10 +94,13 @@ class Graph:
             s = self.vert_list[s].parent
         return s
 
+    # Funzione di inizializzazione dell'Union-find, pone tutti i campi "parent" dei vertici
+    # equivalenti all'id del vertice stesso.
     def initialize(self):
         for v in self.vert_list:
             v.parent = v.id
 
+    # Funzione che ritorna la somma dei pesi di tutti gli archi del grafo.
     def graph_total_weight(self):
         return sum(x.weight for x in self.arch_list)
 
@@ -121,4 +126,4 @@ def graph_generator(file):
     if n_a == graph.n_arches and n_v == graph.n_vertexes:
         return graph
     else:
-        raise Exception('graph not coherent')
+        raise Exception('Grafo non coerente.')

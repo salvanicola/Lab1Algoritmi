@@ -1,4 +1,4 @@
-
+# Semplice implementazione dell'algoritmo di Merge Sort in tempo O(n*log(n)).
 def mergeSort(myList):
     if len(myList) > 1:
         mid = len(myList) // 2
