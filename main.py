@@ -34,14 +34,18 @@ def upload_graph():
     return gs
 
 
+# Dato numero di vertici e lati a calcola la complessità O(m*n) attesa per un grafico
 def mxn(a, b):
     return a * b
 
 
+# Dato numero di vertici e lati a calcola la complessità O(log(n)*m) attesa per un grafico
 def mx_log_n(a, b):
     return math.log(a) * b
 
 
+# Funzione che dati i tempi risultanti, array con numero di vertici, array con numero di archi, e l'algoritmo
+# testato, restituisce il grafico con il riferimento calcolato dalle costanti.
 def plotting_plot(t, vert, arches, fun):
     comp_fun = None
     if fun.__name__ == "prim" or fun.__name__ == "kruskal":
@@ -50,10 +54,13 @@ def plotting_plot(t, vert, arches, fun):
         comp_fun = mxn
     else:
         raise Exception("nessuna funzione trovata con quel nome")
+    # Calcolo un array con le complessità attese in base all'algoritmo selezionato.
     comp = [round(comp_fun(vert[i], arches[i]), 3) for i in range(len(vert))]
-    constant = [round((t[i] / comp[i]), 3) for i in range(len(comp))]
-    references = [round(average(constant) * comp[i], 3) for i in range(len(comp))]
-    logger.debug("%s", constant)
+    # La costante é calcolata come la media del rapporto tra i tempi calcolati e la complessità calcolata dai vertici
+    # e archi dei grafici.
+    constant = average([round((t[i] / comp[i]), 3) for i in range(len(comp))])
+    # Calcola i valori del grafo di riferimento.
+    references = [round(constant * comp[i], 3) for i in range(len(comp))]
     plt.plot(vert, t)
     plt.plot(vert, references)
     plt.legend(["Tempo misurato", "Tempo approssimato"])
@@ -63,7 +70,7 @@ def plotting_plot(t, vert, arches, fun):
     plt.show()
 
 
-# prende in input i grafici e le funzioni ed esegue i test su ognuna
+# prende in input l'array di grafi e l'algoritmo da testare ed esegue i test su ognuno di essi
 def testing(g, f, **args):
     times = []
     complexity = []
@@ -71,15 +78,20 @@ def testing(g, f, **args):
     current_instance = g[0].n_vertexes
     instance_list = []
     results = []
+    logger.debug("%s", f.__name__)
     bar = Bar('Processing ' + f.__name__.title(), max=len(g), check_tty=False)
     for x in g:
         bar.next()
+
+        # Su i grafici da meno di 1000 vertici esegue 100 volte il test e ne fa la media per ottenere un risultato
+        # più attendibile
         num_calls = 1
         if x.n_vertexes < 1000:
             num_calls = 100
         if x.n_vertexes != current_instance:
             update_data(instance_list, times, arch_num, complexity, current_instance)
         out = x
+
         # -----------------start-------------------
         gc.disable()
         start_time = time.perf_counter_ns()
@@ -91,10 +103,11 @@ def testing(g, f, **args):
         # -----------------stop-------------------
 
         duration = stop_time - start_time
+        # Raccolgo i dati dei tempi e del numero di archi in questo array
         instance_list.append([duration / num_calls, x.n_arches])
-        current_instance = x.n_vertexes
+        current_instance = x.n_vertexescomme
 
-        # costruisco un array per visualizzare i risultati
+        # Costruisco un array per visualizzare i risultati
         if f.__name__ == "prim":
             gr = Graph(len(out))
             for m in out:
@@ -102,13 +115,13 @@ def testing(g, f, **args):
                     gr.add(m.parent.id, m.id, m.key)
             out = gr
         results.append(out.graph_total_weight())
-
+        # logger.debug("%s", "{:.2e}".format(duration))
     bar.finish()
     update_data(instance_list, times, arch_num, complexity, current_instance)
     return times, complexity, arch_num, results
 
 
-# aggiorna i dati con tutti i risultati d'istanza
+# Aggiorna i dati con tutti i risultati d'istanza
 def update_data(ins, tim, ar, comp, curr):
     avg_times = average([c[0] for c in ins])
     avg_arch = average([c[1] for c in ins])
@@ -117,6 +130,8 @@ def update_data(ins, tim, ar, comp, curr):
     comp.append(curr)
 
 
+# Prende in input tutti i risultati di MST dei tre algoritmi, se sono uguali stampa su terminale la conferma del
+# successo del programma.
 def is_result_right(result1, result2, result3):
     if result1 == result2 and result2 == result3:
         logger.debug("I risultati sono corretti, perché tutti e tre gli algoritmi restuiscono lo stesso risultato")
@@ -137,13 +152,13 @@ logger.addHandler(logging.StreamHandler())
 if __name__ == '__main__':
     graphs = upload_graph()
 
-    # eseguo i test sugli algoritmi
+    # Eseguo i test su tutti e tre gli algoritmi
     times_p, complexity_p, arch_p, res1 = testing(graphs, prim)
     times_kn, complexity_kn, arch_kn, res2 = testing(graphs, kruskalNaive)
     times_k, complexity_k, arch_k, res3 = testing(graphs, kruskal)
-    # testo se i risultati sono corretti
+    # Testo se i risultati sono corretti
     is_result_right(res1, res2, res3)
-    # genero i grafici per ognuno degli algoritmi
+    # Genero i grafici per ognuno degli algoritmi
     plotting_plot(times_p, complexity_p, arch_p, prim)
     plotting_plot(times_kn, complexity_kn, arch_kn, kruskalNaive)
     plotting_plot(times_k, complexity_k, arch_k, kruskal)
