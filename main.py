@@ -70,6 +70,18 @@ def plotting_plot(t, vert, arches, fun):
     plt.show()
 
 
+def plotting_multiple(t1, t2, t3, vert):
+    plt.plot(vert, t1)
+    plt.plot(vert, t2)
+    if t3 is not None:
+        plt.plot(vert, t3)
+    plt.legend(["Prim", "Kruskal", "Kruskal naive"])
+    plt.ylabel('Tempo di esecuzione')
+    plt.xlabel('Numero di vertici')
+    plt.title('Comparazione algoritmi')
+    plt.show()
+
+
 # prende in input l'array di grafi e l'algoritmo da testare ed esegue i test su ognuno di essi
 def testing(g, f, **args):
     times = []
