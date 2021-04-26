@@ -2,7 +2,7 @@
 # Implementazione iterativa dell'algoritmo DFS, usando le liste di adiacenza.
 def dfs_iter(graph, s, visited):
     # Crea uno stack per il DFS.
-    stack = []
+    stack = list()
 
     # Inserisce il primo vertice all'interno dello stack.
     stack.append(s)

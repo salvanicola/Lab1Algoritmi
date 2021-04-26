@@ -34,12 +34,12 @@ def upload_graph():
     return gs
 
 
-# Dato numero di vertici e lati a calcola la complessità O(m*n) attesa per un grafico
+# Dato numero di vertici e lati a calcola la complessità O(m*n) attesa per un grafico.
 def mxn(a, b):
     return a * b
 
 
-# Dato numero di vertici e lati a calcola la complessità O(log(n)*m) attesa per un grafico
+# Dato numero di vertici e lati a calcola la complessità O(log(n)*m) attesa per un grafico.
 def mx_log_n(a, b):
     return math.log(a) * b
 
@@ -58,9 +58,9 @@ def plotting_plot(t, vert, arches, fun):
     comp = [round(comp_fun(vert[i], arches[i]), 3) for i in range(len(vert))]
     # La costante é calcolata come la media del rapporto tra i tempi calcolati e la complessità calcolata dai vertici
     # e archi dei grafici.
-    constant = average([round((t[i] / comp[i]), 3) for i in range(len(comp))])
+    constant = [round((t[i] / comp[i]), 3) for i in range(len(comp))]
     # Calcola i valori del grafo di riferimento.
-    references = [round(constant * comp[i], 3) for i in range(len(comp))]
+    references = [round(average(constant) * comp[i], 3) for i in range(len(comp))]
     plt.plot(vert, t)
     plt.plot(vert, references)
     plt.legend(["Tempo misurato", "Tempo approssimato"])
@@ -69,7 +69,10 @@ def plotting_plot(t, vert, arches, fun):
     plt.title(fun.__name__.title())
     plt.show()
 
+    logger.debug("%s %s", fun.__name__, constant)
 
+
+# Prende in input i risultati dei tre algoritmi e crea un grafico unico.
 def plotting_multiple(t1, t2, t3, vert):
     plt.plot(vert, t1)
     plt.plot(vert, t2)
@@ -82,7 +85,7 @@ def plotting_multiple(t1, t2, t3, vert):
     plt.show()
 
 
-# prende in input l'array di grafi e l'algoritmo da testare ed esegue i test su ognuno di essi
+# Prende in input l'array di grafi e l'algoritmo da testare ed esegue i test su ognuno di essi.
 def testing(g, f, **args):
     times = []
     complexity = []
@@ -90,7 +93,7 @@ def testing(g, f, **args):
     current_instance = g[0].n_vertexes
     instance_list = []
     results = []
-    logger.debug("%s", f.__name__)
+    # logger.debug("%s", f.__name__)
     bar = Bar('Processing ' + f.__name__.title(), max=len(g), check_tty=False)
     for x in g:
         bar.next()
@@ -108,7 +111,6 @@ def testing(g, f, **args):
         gc.disable()
         start_time = time.perf_counter_ns()
         for i in range(num_calls):
-            # function(x, x.vert_list[0])
             out = f(x, x.vert_list[0])
         stop_time = time.perf_counter_ns()
         gc.enable()
@@ -133,7 +135,7 @@ def testing(g, f, **args):
     return times, complexity, arch_num, results
 
 
-# Aggiorna i dati con tutti i risultati d'istanza
+# Aggiorna i dati con tutti i risultati d'istanza.
 def update_data(ins, tim, ar, comp, curr):
     avg_times = average([c[0] for c in ins])
     avg_arch = average([c[1] for c in ins])
@@ -164,13 +166,15 @@ logger.addHandler(logging.StreamHandler())
 if __name__ == '__main__':
     graphs = upload_graph()
 
-    # Eseguo i test su tutti e tre gli algoritmi
+    # Eseguo i test su tutti e tre gli algoritmi.
     times_p, complexity_p, arch_p, res1 = testing(graphs, prim)
     times_kn, complexity_kn, arch_kn, res2 = testing(graphs, kruskalNaive)
     times_k, complexity_k, arch_k, res3 = testing(graphs, kruskal)
-    # Testo se i risultati sono corretti
+    # Testo se i risultati sono corretti.
     is_result_right(res1, res2, res3)
-    # Genero i grafici per ognuno degli algoritmi
+    # Genero i grafici per ognuno degli algoritmi.
     plotting_plot(times_p, complexity_p, arch_p, prim)
     plotting_plot(times_kn, complexity_kn, arch_kn, kruskalNaive)
     plotting_plot(times_k, complexity_k, arch_k, kruskal)
+    # Genero il grafico unico.
+    plotting_multiple(times_p, times_k, times_kn, complexity_p)
