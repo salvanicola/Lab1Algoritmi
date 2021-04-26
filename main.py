@@ -59,6 +59,7 @@ def plotting_plot(t, vert, arches, fun):
     # La costante é calcolata come la media del rapporto tra i tempi calcolati e la complessità calcolata dai vertici
     # e archi dei grafici.
     constant = [round((t[i] / comp[i]), 3) for i in range(len(comp))]
+    constant = constant[:(len(constant)//4)]
     # Calcola i valori del grafo di riferimento.
     references = [round(average(constant) * comp[i], 3) for i in range(len(comp))]
     plt.plot(vert, t)
@@ -78,7 +79,9 @@ def plotting_multiple(t1, t2, t3, vert):
     plt.plot(vert, t2)
     if t3 is not None:
         plt.plot(vert, t3)
-    plt.legend(["Prim", "Kruskal", "Kruskal naive"])
+        plt.legend(["Prim", "Kruskal", "Kruskal naive"])
+    else:
+        plt.legend(["Prim", "Kruskal"])
     plt.ylabel('Tempo di esecuzione')
     plt.xlabel('Numero di vertici')
     plt.title('Comparazione algoritmi')
@@ -168,13 +171,14 @@ if __name__ == '__main__':
 
     # Eseguo i test su tutti e tre gli algoritmi.
     times_p, complexity_p, arch_p, res1 = testing(graphs, prim)
-    times_kn, complexity_kn, arch_kn, res2 = testing(graphs, kruskalNaive)
+    # times_kn, complexity_kn, arch_kn, res2 = testing(graphs, kruskalNaive)
     times_k, complexity_k, arch_k, res3 = testing(graphs, kruskal)
     # Testo se i risultati sono corretti.
-    is_result_right(res1, res2, res3)
+    # is_result_right(res1, res2, res3)
     # Genero i grafici per ognuno degli algoritmi.
     plotting_plot(times_p, complexity_p, arch_p, prim)
-    plotting_plot(times_kn, complexity_kn, arch_kn, kruskalNaive)
-    plotting_plot(times_k, complexity_k, arch_k, kruskal)
+    # plotting_plot(times_kn, complexity_kn, arch_kn, kruskalNaive)
+    # plotting_plot(times_k, complexity_k, arch_k, kruskal)
     # Genero il grafico unico.
-    plotting_multiple(times_p, times_k, times_kn, complexity_p)
+    # plotting_multiple(times_p, times_k, times_kn, complexity_p)
+    plotting_multiple(times_p, times_k, None, complexity_p)

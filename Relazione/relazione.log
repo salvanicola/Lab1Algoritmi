@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.4.25)  26 APR 2021 20:40
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.4.25)  26 APR 2021 21:07
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -901,9 +901,10 @@ Package fancyhdr Warning: \headheight is too small (25.0pt):
                                                   
 l.160 C
        ome è possibile notare, la differenza tra i tempi di esecuzione dei ... <../graphs/Kruskal.png (PNG copy)>]
-File: ../graphs/algo.png Graphic file (type png)
-<use ../graphs/algo.png>
-Package pdftex.def Info: ../graphs/algo.png  used on input line 165.
+<../graphs/2algo.png, id=260, 642.4pt x 481.8pt>
+File: ../graphs/2algo.png Graphic file (type png)
+<use ../graphs/2algo.png>
+Package pdftex.def Info: ../graphs/2algo.png  used on input line 165.
 (pdftex.def)             Requested size: 418.25368pt x 313.6956pt.
 File: ./res/img/cropped_logo.png Graphic file (type png)
 <use ./res/img/cropped_logo.png>
@@ -938,7 +939,7 @@ Package fancyhdr Warning: \headheight is too small (25.0pt):
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
 l.26 	
-      ] (./res/sections/conclusione.tex
+       <../graphs/2algo.png (PNG copy)>] (./res/sections/conclusione.tex
 File: ./res/img/cropped_logo.png Graphic file (type png)
 <use ./res/img/cropped_logo.png>
 Package pdftex.def Info: ./res/img/cropped_logo.png  used on input line 21.
@@ -969,18 +970,18 @@ Package rerunfilecheck Info: File `relazione.out' has not changed.
 (rerunfilecheck)             Checksum: 0D8E8F9FEEBDFD8D82A6B83446905081;4616.
  ) 
 Here is how much of TeX's memory you used:
- 31367 strings out of 478994
- 718824 string characters out of 5862207
+ 31375 strings out of 478994
+ 718981 string characters out of 5862207
  1301503 words of memory out of 5000000
- 48232 multiletter control sequences out of 15000+600000
+ 48239 multiletter control sequences out of 15000+600000
  413668 words of font info for 47 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  107i,17n,105p,1096b,609s stack positions out of 5000i,500n,10000p,200000b,80000s
 {c:/texlive/2021/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}{c:/texlive/2021/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}<c:/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sfbx2488.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sfti1000.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sftt1000.pfb>
-Output written on relazione.pdf (20 pages, 487112 bytes).
+Output written on relazione.pdf (20 pages, 515984 bytes).
 PDF statistics:
- 341 PDF objects out of 1000 (max. 8388607)
+ 342 PDF objects out of 1000 (max. 8388607)
  297 compressed objects within 3 object streams
  63 named destinations out of 1000 (max. 500000)
- 259 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 264 words of extra memory for PDF output out of 10000 (max. 10000000)
 
